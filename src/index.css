@@ -1,0 +1,23 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  font-family: "Montserrat", "sans-serif";
+  margin: 0px;
+  padding: 0px;
+}
+:root {
+  --theme-color: #FFAA18; /* Website theme color */
+  --primary-color: #000;  /* Primary text color */
+}
+
+/* Enable flip on Y axis */
+.group:hover .group-hover\:flip-y {
+  transform: rotateY(180deg);
+}
+
