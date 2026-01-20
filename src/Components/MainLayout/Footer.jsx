@@ -24,6 +24,7 @@ import { RiCustomerService2Fill } from "react-icons/ri";
 import { TbDeviceMobileCode } from "react-icons/tb";
 import { TiShoppingCart } from "react-icons/ti";
 import { VscTerminalTmux } from "react-icons/vsc";
+import { FaFacebookF, FaXTwitter, FaLinkedinIn, FaInstagram, FaTiktok } from "react-icons/fa6";
 import serviceOverviewBg from "../../assets/Service/serviceOverviewBg.jpg";
 import ExtraMidTitle from "../../Layout/Title/ExtraMidTitle";
 import PrimaryButton from "../../Layout/Button/PrimaryButton";
@@ -39,6 +40,19 @@ import {
   SocialContactData,
   menuData,
 } from "../../Constants/footerData";
+
+// Icon mapping utility
+const getIconComponent = (iconName) => {
+  const iconMap = {
+    FaFacebookF: <FaFacebookF />,
+    FaXTwitter: <FaXTwitter />,
+    FaLinkedinIn: <FaLinkedinIn />,
+    FaInstagram: <FaInstagram />,
+    FaTiktok: <FaTiktok />,
+  };
+  return iconMap[iconName] || null;
+};
+
 const Footer = () => {
   const [emailValue, setEmailValue] = useState("");
   const [subscriptionData, setSubscriptionData] = useState("");
@@ -245,9 +259,11 @@ const Footer = () => {
                     key={index}
                     href={item.link}
                     target="_blank"
-                    className="text-sm md:text-lg lg:text-lg p-2 md:p-2 lg:p-3 bg-theme rounded-full text-primary hover:bg-theme hover:bg-opacity-[0.6] hover:text-primary relative z-[10] duration-200"
+                    rel="noopener noreferrer"
+                    title={item.title}
+                    className="text-sm md:text-lg lg:text-lg p-2 md:p-2 lg:p-3 bg-theme rounded-full text-primary hover:bg-opacity-[0.6] transition-all duration-200 flex items-center justify-center hover:scale-110"
                   >
-                    {item.icon}
+                    {getIconComponent(item.icon)}
                   </a>
                 ))}
               </div>
