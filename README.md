@@ -1566,7 +1566,58 @@ A: Yes! Public APIs are available in endpoints.js (banner, products, pages, etc.
 
 ---
 
-## 👨‍💻 Development Notes
+## � Bug Fixes & Improvements (January 20, 2026)
+
+### React Console Warnings Fixed ✅
+
+#### 1. **Invalid DOM Property - `class` to `className`**
+- **File:** `src/Components/Home/Strategy.jsx` (Line 93)
+- **Issue:** Used HTML `class` attribute instead of React's `className`
+- **Fix:** Replaced `class=` with `className=`
+- **Impact:** Eliminated React invalid DOM property warning
+
+#### 2. **Missing Key Props in List Rendering**
+- **File:** `src/Components/MainLayout/Footer.jsx`
+- **Issue:** Three `.map()` functions rendering lists without unique `key` props
+- **Fixed Components:**
+  - Social icons map (Facebook, Twitter, LinkedIn, Instagram, TikTok)
+  - Quick Links menu items
+  - Contact information cards
+- **Fix:** Added `key={index}` to all mapped elements
+- **Impact:** Removed React list warning and improved rendering performance
+
+#### 3. **Export Name Mismatch**
+- **File:** `src/Components/MainLayout/Footer.jsx` (Line 32)
+- **Issue:** Import statement referenced `toast_position` which doesn't exist in `src/Api/Api.jsx`
+- **Fix:** Changed import and all usages from `toast_position` → `toastr_position` (correct export name)
+- **Impact:** Fixed SyntaxError and resolved module export issue
+
+#### 4. **Footer Social Icons - React Icons Integration**
+- **File:** `src/Components/MainLayout/Footer.jsx`
+- **Issue:** Social icons were stored as strings in data and not rendering as actual components
+- **Improvements:**
+  - Imported social media icons from `react-icons/fa6` (FaFacebookF, FaXTwitter, FaLinkedinIn, FaInstagram, FaTiktok)
+  - Created `getIconComponent()` utility function to map icon names to React components
+  - Enhanced rendering with proper icon components instead of strings
+  - Added security attributes (`rel="noopener noreferrer"`)
+  - Added accessible tooltips with `title` attribute
+  - Improved hover effects with `scale-110` animation and smooth transitions
+- **Impact:** Social icons now display correctly with beautiful animations and better accessibility
+
+### API Error Handling
+The following 404 errors are expected during development (non-critical):
+- `asset-api.shelaigor.com/api/testimonials`
+- `asset-api.shelaigor.com/api/services`
+- `asset-api.shelaigor.com/api/faqs`
+- `asset-api.shelaigor.com/api/blogs`
+- `asset-api.shelaigor.com/api/banner`
+- `asset-api.shelaigor.com/api/settings`
+
+**Solution:** These errors are handled gracefully with try-catch blocks and don't affect app functionality. Connect to a live API or use mock data mode for full feature testing.
+
+---
+
+## �👨‍💻 Development Notes
 
 ### Code Quality Standards
 
