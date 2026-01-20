@@ -5,7 +5,7 @@ const MidTitle = ({className , text , key , ...rest}) => {
     <h1 
     {...rest} 
     key={key} 
-    className={`text-base capitalize  ${className}`}>{text}</h1>
+    className={`text-base md:text-lg capitalize  ${className}`}>{text}</h1>
   )
 }
 

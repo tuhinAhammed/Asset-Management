@@ -67,9 +67,8 @@ const WhyUs = () => {
                                 <div className=" grid grid-cols-1 gap-2 md:gap-2">
                                     {
                                         whoWeAreData.map((item, index) => (
-                                            <div className="flex items-center gap-2 md:gap-6 group hover:bg-tertiary hover:bg-opacity-[0.2] md:p-4 transition-transform dutation-500">
+                                            <div key={index} className="flex items-center gap-2 md:gap-6 group hover:bg-tertiary hover:bg-opacity-[0.2] md:p-4 transition-transform dutation-500">
                                                 <p
-                                                    key={index}
                                                     className="text-xl md:text-3xl lg:text-5xl text-theme transform transition-transform duration-300 group-hover:-scale-x-100"
                                                 >
                                                     {item.icon}

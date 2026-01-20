@@ -13,14 +13,14 @@ const ShortMarque = () => {
                         {/* Text Items */}
                         <span
 
-                            class="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px] font-bold opacity-20  text-primary uppercase"
+                            className="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px] font-bold opacity-20  text-primary uppercase"
                             aria-hidden="true"
                         >
                             Digital Solutions
                         </span>
                         <span
 
-                            class="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
+                            className="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
 font-bold   text-theme uppercase"
                             aria-hidden="true"
                         >
@@ -28,7 +28,7 @@ font-bold   text-theme uppercase"
                         </span>
                         <span
 
-                            class="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
+                            className="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
     font-bold   text-primary uppercase"
                             aria-hidden="true"
                         >
@@ -36,7 +36,7 @@ font-bold   text-theme uppercase"
                         </span>
                         <span
 
-                            class="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
+                            className="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
 font-bold   text-theme uppercase"
                             aria-hidden="true"
                         >
@@ -44,7 +44,7 @@ font-bold   text-theme uppercase"
                         </span>
                         <span
 
-                            class="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
+                            className="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[100px]
     font-bold   opacity-20  text-primary  uppercase "
                             aria-hidden="true"
                         >

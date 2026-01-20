@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -14,13 +14,7 @@ import { api } from "../../Api/Api";
 
 /* ---------------- MENU DATA ---------------- */
 
-const companyMenu = {
-  subMenu: [
-    { name: "Team", link: "/team", icon: <FaUsers /> },
-    { name: "Testimonials", link: "/testimonials", icon: <FaCommentDots /> },
-    { name: "FAQ's", link: "/faqs", icon: <FaQuestionCircle /> },
-  ],
-};
+
 
 const HEADER_HEIGHT = 70;
 
@@ -35,9 +29,12 @@ const Header = () => {
   const sidebarRef = useRef(null);
   const toggleBtnRef = useRef(null);
 
-  const { logo, company_phone } = useSelector(
-    (state) => state.landingPageData?.data || {}
-  );
+  const landingPageData = useSelector((state) => state.landingPageData?.data);
+  const { logo, company_phone , company_name} = useMemo(() => ({
+    logo: landingPageData?.logo || null,
+    company_phone: landingPageData?.company_phone || null,
+    company_name: landingPageData?.company_name || null
+  }), [landingPageData]);
 
   /* ---------- OPEN / CLOSE MENU ---------- */
 
@@ -96,7 +93,14 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
+  const companyMenu = {
+    subMenu: [
+      { name: "Our Story", link: "/our-story"  },
+      { name: "Our Team", link: "/our-team" },
+      { name: `Why ${company_name}`, link: "/whyus" },
+      { name: "Our Business", link: "/our-business" },
+    ],
+  };
   return (
     <>
       {/* ---------------- STYLES ---------------- */}
@@ -249,7 +253,7 @@ const Header = () => {
                 <li>
                   <details className="group">
                     <summary className="flex justify-between items-center py-2 cursor-pointer">
-                      Company
+                      About
                       <MdKeyboardArrowDown className="group-open:rotate-180 transition-transform" />
                     </summary>
 
@@ -261,9 +265,9 @@ const Header = () => {
                           onClick={closeMenu}
                           className="flex items-center gap-3"
                         >
-                          <span className="text-theme text-xl">
+                          {/* <span className="text-theme text-xl">
                             {item.icon}
-                          </span>
+                          </span> */}
                           <MidTitle
                             text={item.name}
                             className="text-sm font-normal"

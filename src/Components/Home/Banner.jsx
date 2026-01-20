@@ -68,10 +68,10 @@ const Banner = () => {
                                 text="Solution for your Digital Products"
                             />
                         </div>
-                        <p data-aos="fade-right" data-aos-duration="1000" className="text-secondary py-8 md:py-10 text-5xl sm:text-6xl md:text-8xl text-center md:text-left">
+                        <div data-aos="fade-right" data-aos-duration="1000" className="text-secondary py-8 md:py-10 text-5xl sm:text-6xl md:text-8xl text-center md:text-left">
                             <p className='font-bold'>Your Vision, Our <br /></p>
                             <p className='text-5xl sm:text-6xl md:text-7xl'>Digital Expertise</p>
-                        </p>
+                        </div>
                         <div data-aos="fade-right" data-aos-duration="1000" className="">
                             <MidTitle className="text-secondary text-center md:text-left md:w-[60%]" text="Highlights the partnership between the client’s vision and the agency’s technical and creative skills." />
 

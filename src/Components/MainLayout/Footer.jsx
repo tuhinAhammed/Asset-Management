@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import Container from '../../Layout/Container'
 import logo from "../../assets/Header/logo.png"
 import MidTitle from '../../Layout/Title/MidTitle'
-import { FaArrowRightLong, FaLocationDot, FaXTwitter } from 'react-icons/fa6'
-import { IoMdMail } from 'react-icons/io'
-import { MdAddCall, MdEmail, MdOutlineWifiCalling3 } from 'react-icons/md'
+import { FaArrowRightLong } from 'react-icons/fa6'
+import { MdEmail, MdOutlineWifiCalling3 } from 'react-icons/md'
 import { Link, NavLink } from 'react-router-dom'
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaPhoneAlt, FaTiktok, FaTwitter } from 'react-icons/fa'
+import { FaPhoneAlt } from 'react-icons/fa'
 import MinTitle from '../../Layout/Title/MinTitle'
 import { AiOutlineSolution } from "react-icons/ai";
 import { BiCodeBlock } from "react-icons/bi";
@@ -28,110 +27,19 @@ import { LuTimer } from 'react-icons/lu'
 import SubscriptionButton from '../../Layout/Button/SubscriptionButton'
 import { useSelector } from 'react-redux'
 import { Bounce, toast } from 'react-toastify'
-
-const contactData = [
-    {
-        sub: "Location",
-        title: "Uttara , Dhaka - Bangladesh",
-        icon: <FaLocationDot />
-    },
-    {
-        sub: "Mail",
-        title: "admin@skilifyTech.com",
-        icon: <IoMdMail />
-    },
-    {
-        sub: "Number",
-        title: "+8801124156434",
-        icon: <MdAddCall />
-    },
-]
-
-const SocialContactData = [
-    {
-        title: "Facebook",
-        icon: <FaFacebookF />,
-        link: "https://www.facebook.com/skilifytech/"
-    },
-    {
-        title: "Twitter",
-        icon: <FaXTwitter />,
-        link: "https://x.com/SkilifyTech"
-    },
-    {
-        title: "Linkedin",
-        icon: <FaLinkedinIn />,
-        link: "#"
-    },
-    {
-        title: "Instagram",
-        icon: <FaInstagram />,
-        link: "https://www.instagram.com/skilifytech/"
-    },
-    {
-        title: "Tiktok",
-        icon: <FaTiktok />,
-        link: "https://www.tiktok.com/@skilify.tech?_r=1&_t=ZS-91j5rkYBiq5"
-    },
-]
-export const menuData = [
-    {
-        name: "Home",
-        link: "/",
-    },
-    {
-        name: "Services",
-        link: "/services",
-        subMenu: [
-            {
-                name: "Web Design & Development",
-                link: "/services/webDesigAndDev",
-                icon: <MdDesignServices />
-            },
-            {
-                name: "Wardpress 360",
-                link: "/services/WardpressDev",
-                icon: <BiCodeBlock />
-            },
-            {
-                name: "Custom Software Development",
-                link: "/services/customSoftwareDev",
-                icon: <IoCodeSlash />
-            },
-            {
-                name: "App Development",
-                link: "/services/appDevelopment",
-                icon: <TbDeviceMobileCode />
-            },
-            {
-                name: "Strategic Consultancy (Add-ons)",
-                link: "/services/strategicConsultancy",
-                icon: <TbDeviceMobileCode />
-            },
-        ]
-    },
-
-    {
-        name: "Projects",
-        link: "/projects"
-    },
-    {
-        name: "Blogs",
-        link: "/blogs"
-    },
-    {
-        name: "Contact",
-        link: "/contact"
-    }
-];
+import { contactData, SocialContactData, menuData } from '../../Constants/footerData'
 const  Footer = () => {
     const [emailValue, setEmailValue] = useState("")
     const [subscriptionData, setSubscriptionData] = useState("");
     const [subscriptionDataError, setSubscriptionDataError] = useState("");
     const [subscriptionLoading, setSubscriptionLoading] = useState(false);
-    const { logo, company_phone, company_email, company_address } = useSelector(
-        (state) => state.landingPageData?.data || {}
-    );
+    const landingPageData = useSelector((state) => state.landingPageData?.data);
+    const { logo, company_phone, company_email, company_address } = useMemo(() => ({
+        logo: landingPageData?.logo || null,
+        company_phone: landingPageData?.company_phone || null,
+        company_email: landingPageData?.company_email || null,
+        company_address: landingPageData?.company_address || null
+    }), [landingPageData]);
     const handleSubscriptionData = (e) => {
         setSubscriptionData(e.target.value);
   
@@ -313,8 +221,8 @@ const  Footer = () => {
                             <MidTitle className="font-secondary  text-secondary mt-2 md:mt-5 pb-2 md:pb-3" text="WWelcome to our web design agency. We create beautiful, user-friendly websites that help businesses stand out online." />
                             <div className='flex items-center gap-x-2 sm:gap-x-3 md:gap-x-4 lg:gap-x-4 mt-3 sm:mt-2 lg:mt-2'>
                                 {
-                                    SocialContactData.map((item) => (
-                                        <a href={item.link} target='_blank' className='text-sm md:text-lg lg:text-lg p-2 md:p-2 lg:p-3 bg-theme rounded-full text-primary hover:bg-theme hover:bg-opacity-[0.6] hover:text-primary relative z-[10] duration-200'>{item.icon}</a>
+                                    SocialContactData.map((item, index) => (
+                                        <a key={index} href={item.link} target='_blank' className='text-sm md:text-lg lg:text-lg p-2 md:p-2 lg:p-3 bg-theme rounded-full text-primary hover:bg-theme hover:bg-opacity-[0.6] hover:text-primary relative z-[10] duration-200'>{item.icon}</a>
 
                                     ))
                                 }
@@ -326,8 +234,8 @@ const  Footer = () => {
                                     <ExtraMidTitle className="font-secondary text-secondary font-semibold relative z-[10]" text="Quick Link" />
                                     <div className='mt-2 md:mt-5'>
                                         {
-                                            menuData.map((item) => (
-                                                <NavLink to={item.link}>
+                                            menuData.map((item, index) => (
+                                                <NavLink key={index} to={item.link}>
                                                     <div className="flex pb-0 md:pb-2 gap-1 md:gap-2 items-center group">
                                                         {/* <FaArrowRightLong className='text-secondary group-hover:text-theme text-xs lg:text-xl transform duration-300 transition-transform ' /> */}
                                                         <MidTitle className='text-secondary group-hover:text-theme text-md hover:ml-1 duration-300 transform  ' text={item.name} />
@@ -343,8 +251,8 @@ const  Footer = () => {
                                     <div className="grid gap-4 grid-cols-1 mt-2 md:mt-5">
 
                                         {
-                                            contactInformationData.map((item) => (
-                                                <div className="innerCard  flex items-center gap-4 group">
+                                            contactInformationData.map((item, index) => (
+                                                <div key={index} className="innerCard  flex items-center gap-4 group">
                                                     <p className="text-lg text-theme rounded-full transform transition-transform duration-300 group-hover:-scale-x-100 ">
                                                         {item.icon}
                                                     </p>

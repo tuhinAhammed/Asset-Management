@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import SectionTitle from "../../Layout/Title/SectionTitle";
 import LargeTitle from "../../Layout/Title/LargeTitle";
 import ExtraLargeTitle from "../../Layout/Title/ExtraLargeTitle";
@@ -23,9 +23,13 @@ import { useSelector } from "react-redux";
 const Strategy = () => {
     const [servicesData, setServicesData] = useState([]);
     const navigate = useNavigate();
-    const { logo, company_phone , company_email , company_address} = useSelector(
-        (state) => state.landingPageData?.data || {}
-      );
+    const landingPageData = useSelector((state) => state.landingPageData?.data);
+    const { logo, company_phone, company_email, company_address } = useMemo(() => ({
+        logo: landingPageData?.logo || null,
+        company_phone: landingPageData?.company_phone || null,
+        company_email: landingPageData?.company_email || null,
+        company_address: landingPageData?.company_address || null
+    }), [landingPageData]);
     useEffect(() => {
         const fetchApi = async () => {
             const response = await axios.get(serviceListApi);
@@ -86,7 +90,7 @@ const Strategy = () => {
                 </div>
                 <span
                 
-                    class="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[120px]
+                    className="pointer-events-none select-none inset-0 flex items-center justify-center text-[40px] sm:text-[80px] md:text-[120px]
         lg:text-[150px] font-bold opacity-10  text-secondary uppercase"
                     aria-hidden="true"
                 >
@@ -100,25 +104,30 @@ const Strategy = () => {
 
                 <ExtraMidTitle text="Contact Info" className="font-bold font-secondary"/>
                 {
-                    contactInformationData.map((item) => (
-                        <Link to={item.link} target="_blank" rel="noopener noreferrer">
+                    contactInformationData.map((item, index) => (
+                        item.link ? (
+                        <Link key={index} to={item.link} target="_blank" rel="noopener noreferrer">
                         <div className="innerCard  flex items-center gap-4 group">
                             <p className="text-2xl text-primary p-4 bg-theme rounded-full transform transition-transform duration-300 group-hover:-scale-x-100">
                                 {item.icon}
                             </p>
                             <div className="">
                                 <MidTitle className="" text={item.title} />
-                                {
-                                    item.link ?
-                                        <Link to={item.link} target="_blank" rel="noopener noreferrer">
-                                            <MinTitle className="text-primary opacity-[0.4]" text={item.desc} />
-                                        </Link>
-                                        :
-                                        <MinTitle className="text-primary opacity-[0.4]" text={item.desc} />
-                                }
+                                <MinTitle className="text-primary opacity-[0.4]" text={item.desc} />
                             </div>
                         </div>
                         </Link>
+                        ) : (
+                        <div key={index} className="innerCard  flex items-center gap-4 group">
+                            <p className="text-2xl text-primary p-4 bg-theme rounded-full transform transition-transform duration-300 group-hover:-scale-x-100">
+                                {item.icon}
+                            </p>
+                            <div className="">
+                                <MidTitle className="" text={item.title} />
+                                <MinTitle className="text-primary opacity-[0.4]" text={item.desc} />
+                            </div>
+                        </div>
+                        )
                     ))
                 }
             </div>
