@@ -93,7 +93,9 @@ const Login = () => {
           </form>
 
           <p className="text-center text-tertiary text-sm mt-6">
-            Demo credentials available upon request
+            <span className="block mb-2 font-semibold">Demo Credentials:</span>
+            <span className="block text-xs">Email: admin@example.com</span>
+            <span className="block text-xs">Password: 12345678</span>
           </p>
         </div>
       </div>

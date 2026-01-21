@@ -57,25 +57,27 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
     // Handle different possible response structures
     let token = null;
     let user = null;
-    let fullResponse = response.data;
+    const responseData = response.data;
     
-    // Try different paths where token might be
-    if (response.data?.data?.token) {
-      token = response.data.data.token;
-      user = response.data.data.user;
-    } else if (response.data?.token) {
-      token = response.data.token;
-      user = response.data.user;
-    } else if (response.data?.authorization?.token) {
-      token = response.data.authorization.token;
-      user = response.data.user;
+    // Check if response is successful
+    if (!responseData.success) {
+      console.error('Login failed:', responseData.message);
+      return rejectWithValue(responseData.message || 'Login failed');
     }
     
-    console.log('Extracted Token:', token);
-    console.log('Extracted User:', user);
+    // Extract token and user from successful response
+    if (responseData.token) {
+      token = responseData.token;
+      user = responseData.user;
+    } else if (responseData.data?.token) {
+      token = responseData.data.token;
+      user = responseData.data.user;
+    }
+    
+    console.log('Login successful. Extracted Token:', token ? 'Present' : 'Missing');
     
     if (!token) {
-      console.error('No token in response. Full response:', response.data);
+      console.error('No token in response. Full response:', responseData);
       return rejectWithValue('No token in API response. Check browser console for details.');
     }
     
