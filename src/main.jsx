@@ -23,6 +23,8 @@ import WhyUs from "./Pages/WhyUs.jsx";
 import OurBusiness from "./Pages/OurBusiness.jsx";
 import Career from "./Pages/Career.jsx";
 import NewsEvents from "./Pages/NewsEvents.jsx";
+import NewsDetail from './Pages/NewsDetail.jsx';
+import EventDetail from './Pages/EventDetail.jsx';
 
 // Admin Pages
 import AdminLayout from './Components/Admin/AdminLayout.jsx';
@@ -40,8 +42,6 @@ import Content from './Pages/Admin/Content.jsx';
 import Profile from './Pages/Admin/Profile.jsx';
 import ChangePassword from './Pages/Admin/ChangePassword.jsx';
 import Settings from './Pages/Admin/Settings.jsx';
-import NewsDetail from './Pages/NewsDetail.jsx';
-import EventDetail from './Pages/EventDetail.jsx';
 
 const root = document.getElementById("root");
 
