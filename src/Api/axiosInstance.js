@@ -32,7 +32,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Allow cookies in cross-origin requests
+  withCredentials: false, // Disabled due to CORS policy - using JWT token instead
 });
 
 // Add request interceptor to inject auth token
