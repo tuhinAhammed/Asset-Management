@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../Redux/Slice/authSlice';
 import { toast } from 'react-toastify';
-import { HiMenu, HiX, HiLogout, HiUser } from 'react-icons/hi';
+import { HiMenu, HiX, HiLogout } from 'react-icons/hi';
 import { MdDashboard, MdArticle, MdBuild, MdDescription, MdShoppingCart, MdCategory, MdImage, MdMenu as MdMenuIcon, MdWork, MdSettings } from 'react-icons/md';
 
 const AdminLayout = () => {
@@ -37,20 +37,20 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-quaternary">
       {/* Sidebar */}
       <aside
         className={`${
           sidebarOpen ? 'w-64' : 'w-20'
-        } bg-gradient-to-b from-slate-900 to-slate-800 text-white transition-all duration-300 overflow-y-auto fixed h-full z-40 shadow-xl`}
+        } bg-static text-secondary transition-all duration-300 overflow-y-auto fixed h-full z-40 shadow-lg border-r border-theme border-opacity-20`}
       >
         {/* Logo Section */}
-        <div className="p-4 border-b border-slate-700 flex items-center justify-center">
+        <div className="p-4 border-b border-theme border-opacity-20 flex items-center justify-center">
           <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg">
+            <div className="bg-theme p-2 rounded-lg text-secondary">
               <MdDashboard size={24} />
             </div>
-            {sidebarOpen && <h1 className="text-xl font-bold">Asset Admin</h1>}
+            {sidebarOpen && <h1 className="text-xl font-bold text-secondary font-primary">Asset Admin</h1>}
           </div>
         </div>
 
@@ -62,13 +62,13 @@ const AdminLayout = () => {
               <button
                 key={item.path}
                 onClick={() => navigate(item.path)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-600 hover:shadow-md group ${
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-theme hover:text-secondary text-tertiary group ${
                   sidebarOpen ? '' : 'justify-center'
                 }`}
                 title={!sidebarOpen ? item.label : ''}
               >
                 <IconComponent size={22} className="flex-shrink-0 group-hover:scale-110 transition-transform" />
-                {sidebarOpen && <span className="text-sm font-medium">{item.label}</span>}
+                {sidebarOpen && <span className="text-sm font-medium font-primary">{item.label}</span>}
               </button>
             );
           })}
@@ -78,60 +78,59 @@ const AdminLayout = () => {
       {/* Main Content */}
       <div className={`${sidebarOpen ? 'ml-64' : 'ml-20'} flex-1 flex flex-col transition-all duration-300`}>
         {/* Top Bar */}
-        <header className="bg-white shadow-md px-6 py-4 flex items-center justify-between sticky top-0 z-30 border-b border-gray-200">
+        <header className="bg-secondary shadow-md px-6 py-4 flex items-center justify-between sticky top-0 z-30 border-b border-theme border-opacity-10">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition text-slate-700"
+              className="p-2 hover:bg-quaternary rounded-lg transition text-primary font-primary"
             >
               {sidebarOpen ? <HiX size={24} /> : <HiMenu size={24} />}
             </button>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-slate-900 to-blue-600 bg-clip-text text-transparent">Admin Dashboard</h2>
+            <h2 className="text-2xl font-bold text-theme font-primary">Admin Dashboard</h2>
           </div>
 
           {/* User Menu */}
           <div className="relative">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-gray-100 transition border border-gray-200"
+              className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-quaternary transition border border-theme border-opacity-20 text-primary font-primary"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white">
-                <HiUser size={20} />
+              <div className="w-10 h-10 bg-theme rounded-full flex items-center justify-center text-secondary font-bold">
+                {user?.name?.charAt(0).toUpperCase() || 'A'}
               </div>
               <div className="text-left hidden sm:block">
-                <p className="text-sm font-semibold text-slate-900">{user?.name || 'Admin'}</p>
-                <p className="text-xs text-gray-500">{user?.email || 'admin@example.com'}</p>
+                <p className="text-sm font-semibold text-primary font-primary">{user?.name || 'Admin'}</p>
+                <p className="text-xs text-tertiary">{user?.email || 'admin@example.com'}</p>
               </div>
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl overflow-hidden z-50 border border-gray-200">
-                <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
-                  <p className="text-sm font-semibold text-slate-900">{user?.name || 'Admin'}</p>
-                  <p className="text-xs text-gray-500">{user?.email || 'admin@example.com'}</p>
+              <div className="absolute right-0 mt-2 w-56 bg-secondary rounded-lg shadow-lg overflow-hidden z-50 border border-theme border-opacity-10">
+                <div className="px-4 py-3 bg-quaternary border-b border-theme border-opacity-10">
+                  <p className="text-sm font-semibold text-primary font-primary">{user?.name || 'Admin'}</p>
+                  <p className="text-xs text-tertiary">{user?.email || 'admin@example.com'}</p>
                 </div>
                 <button
                   onClick={() => {
                     navigate('/admin/profile');
                     setDropdownOpen(false);
                   }}
-                  className="w-full text-left px-4 py-3 hover:bg-blue-50 transition flex items-center gap-3 text-gray-700 font-medium"
+                  className="w-full text-left px-4 py-3 hover:bg-quaternary transition flex items-center gap-3 text-primary font-medium font-primary border-b border-theme border-opacity-5"
                 >
-                  <HiUser size={18} /> Profile
+                  <MdSettings size={18} /> Profile
                 </button>
                 <button
                   onClick={() => {
                     navigate('/admin/change-password');
                     setDropdownOpen(false);
                   }}
-                  className="w-full text-left px-4 py-3 hover:bg-blue-50 transition flex items-center gap-3 text-gray-700 font-medium"
+                  className="w-full text-left px-4 py-3 hover:bg-quaternary transition flex items-center gap-3 text-primary font-medium font-primary border-b border-theme border-opacity-5"
                 >
                   <MdSettings size={18} /> Change Password
                 </button>
-                <hr />
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-4 py-3 hover:bg-red-50 text-red-600 transition flex items-center gap-3 font-medium"
+                  className="w-full text-left px-4 py-3 hover:bg-quaternary text-theme transition flex items-center gap-3 font-medium font-primary"
                 >
                   <HiLogout size={18} /> Logout
                 </button>

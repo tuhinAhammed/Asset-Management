@@ -33,46 +33,46 @@ const DataTable = ({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-secondary rounded-lg shadow-md overflow-hidden border border-theme border-opacity-10">
       {/* Search Bar */}
-      <div className="p-4 border-b border-quaternary">
+      <div className="p-4 border-b border-theme border-opacity-10">
         <input
           type="text"
           placeholder="Search..."
           value={searchValue}
           onChange={(e) => onSearch(e.target.value)}
-          className="w-full px-4 py-2 border border-borderColor rounded-lg focus:outline-none focus:border-theme"
+          className="w-full px-4 py-2 border border-theme border-opacity-30 rounded-lg focus:outline-none focus:border-theme text-primary placeholder-tertiary font-primary"
         />
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-quaternary">
+          <thead className="bg-quaternary border-b border-theme border-opacity-10">
             <tr>
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className="px-6 py-3 text-left text-sm font-semibold text-primary"
+                  className="px-6 py-3 text-left text-sm font-semibold text-primary font-primary"
                 >
                   {col.label}
                 </th>
               ))}
-              <th className="px-6 py-3 text-left text-sm font-semibold text-primary">Actions</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-primary font-primary">Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredData.length === 0 ? (
               <tr>
-                <td colSpan={columns.length + 1} className="px-6 py-8 text-center text-tertiary">
+                <td colSpan={columns.length + 1} className="px-6 py-8 text-center text-tertiary font-primary">
                   No data found
                 </td>
               </tr>
             ) : (
               filteredData.map((row, idx) => (
-                <tr key={row.id || idx} className="border-b border-quaternary hover:bg-quaternary transition">
+                <tr key={row.id || idx} className="border-b border-theme border-opacity-10 hover:bg-quaternary transition">
                   {columns.map((col) => (
-                    <td key={col.key} className="px-6 py-4 text-sm text-primary">
+                    <td key={col.key} className="px-6 py-4 text-sm text-primary font-primary">
                       {col.render ? col.render(row[col.key], row) : row[col.key]}
                     </td>
                   ))}
@@ -81,7 +81,7 @@ const DataTable = ({
                       {onView && (
                         <button
                           onClick={() => onView(row.id)}
-                          className="p-2 hover:bg-blue-50 text-blue-600 rounded transition"
+                          className="p-2 hover:bg-lightThemeBg text-theme rounded transition"
                           title="View"
                         >
                           <HiEye size={18} />
@@ -90,7 +90,7 @@ const DataTable = ({
                       {onEdit && (
                         <button
                           onClick={() => onEdit(row.id)}
-                          className="p-2 hover:bg-yellow-50 text-yellow-600 rounded transition"
+                          className="p-2 hover:bg-theme hover:bg-opacity-10 text-theme rounded transition"
                           title="Edit"
                         >
                           <HiPencil size={18} />
@@ -99,7 +99,7 @@ const DataTable = ({
                       {onDelete && (
                         <button
                           onClick={() => handleDelete(row.id)}
-                          className="p-2 hover:bg-red-50 text-red-600 rounded transition"
+                          className="p-2 hover:bg-red-100 text-red-600 rounded transition"
                           title="Delete"
                         >
                           <HiTrash size={18} />

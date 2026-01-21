@@ -34,49 +34,49 @@ const Dashboard = () => {
       label: 'Total Products',
       value: products.length,
       icon: MdShoppingCart,
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'text-theme',
+      bgColor: 'bg-lightThemeBg',
     },
     {
       label: 'Total Categories',
       value: categories.length,
       icon: MdCategory,
-      color: 'from-green-500 to-green-600',
-      bgColor: 'bg-green-50',
+      color: 'text-theme',
+      bgColor: 'bg-lightThemeBg',
     },
     {
       label: 'Total Pages',
       value: pages.length,
       icon: MdDescription,
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
+      color: 'text-theme',
+      bgColor: 'bg-lightThemeBg',
     },
     {
       label: 'Total Careers',
       value: careers.length,
       icon: MdWork,
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-orange-50',
+      color: 'text-theme',
+      bgColor: 'bg-lightThemeBg',
     },
     {
       label: 'Total Menus',
       value: menus.length,
       icon: MdMenu,
-      color: 'from-pink-500 to-pink-600',
-      bgColor: 'bg-pink-50',
+      color: 'text-theme',
+      bgColor: 'bg-lightThemeBg',
     },
   ];
 
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900 text-white p-8 rounded-xl shadow-lg">
+      <div className="bg-static text-secondary p-8 rounded-lg shadow-md border border-theme border-opacity-20">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.name || 'Admin'}!</h1>
-            <p className="text-blue-100 text-lg">Manage your assets and content efficiently</p>
+            <h1 className="text-4xl font-bold mb-2 font-primary">Welcome back, {user?.name || 'Admin'}!</h1>
+            <p className="text-tertiary text-lg">Manage your assets and content efficiently</p>
           </div>
-          <MdTrendingUp size={64} className="opacity-20" />
+          <MdTrendingUp size={64} className="opacity-20 text-theme" />
         </div>
       </div>
 
@@ -85,15 +85,15 @@ const Dashboard = () => {
         {stats.map((stat, idx) => {
           const Icon = stat.icon;
           return (
-            <div key={idx} className={`${stat.bgColor} rounded-xl shadow-md p-6 hover:shadow-xl transition-all duration-300 border border-gray-100`}>
-              <div className={`bg-gradient-to-br ${stat.color} w-14 h-14 rounded-lg flex items-center justify-center mb-4 text-white shadow-md`}>
+            <div key={idx} className={`${stat.bgColor} rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 border border-theme border-opacity-20 bg-secondary`}>
+              <div className={`${stat.color} w-14 h-14 rounded-lg flex items-center justify-center mb-4 bg-theme bg-opacity-10`}>
                 <Icon size={28} />
               </div>
-              <p className="text-gray-600 text-sm font-medium mb-2">{stat.label}</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-tertiary text-sm font-medium mb-2 font-primary">{stat.label}</p>
+              <p className="text-3xl font-bold text-primary font-primary">
                 {productsLoading ? '...' : stat.value}
               </p>
-              <div className="mt-3 flex items-center text-green-600 text-sm font-medium">
+              <div className="mt-3 flex items-center text-theme text-sm font-medium font-primary">
                 <MdCheckCircle size={16} className="mr-1" />
                 Active
               </div>
@@ -105,27 +105,27 @@ const Dashboard = () => {
       {/* Recent Items */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Products */}
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+        <div className="bg-secondary rounded-lg shadow-md p-6 border border-theme border-opacity-10">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <MdShoppingCart className="text-blue-600" size={24} />
+            <h3 className="text-lg font-bold text-primary flex items-center gap-2 font-primary">
+              <MdShoppingCart className="text-theme" size={24} />
               Recent Products
             </h3>
-            <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
+            <span className="text-xs bg-lightThemeBg text-theme px-3 py-1 rounded-full font-medium font-primary">
               {products.length} total
             </span>
           </div>
           <div className="space-y-3">
             {products.slice(0, 5).map((product) => (
-              <div key={product.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition border border-gray-200">
+              <div key={product.id} className="flex justify-between items-center p-4 bg-quaternary rounded-lg hover:bg-theme hover:bg-opacity-5 transition border border-theme border-opacity-10">
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-900">{product.name}</p>
-                  <p className="text-sm text-gray-500">ID: {product.id}</p>
+                  <p className="font-semibold text-primary font-primary">{product.name}</p>
+                  <p className="text-sm text-tertiary">ID: {product.id}</p>
                 </div>
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  className={`px-3 py-1 rounded-full text-xs font-semibold font-primary ${
                     product.status === 'active'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-theme bg-opacity-20 text-theme'
                       : 'bg-red-100 text-red-700'
                   }`}
                 >
@@ -134,33 +134,33 @@ const Dashboard = () => {
               </div>
             ))}
             {products.length === 0 && (
-              <p className="text-center text-gray-500 py-8">No products yet</p>
+              <p className="text-center text-tertiary py-8">No products yet</p>
             )}
           </div>
         </div>
 
         {/* Recent Pages */}
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+        <div className="bg-secondary rounded-lg shadow-md p-6 border border-theme border-opacity-10">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-              <MdDescription className="text-purple-600" size={24} />
+            <h3 className="text-lg font-bold text-primary flex items-center gap-2 font-primary">
+              <MdDescription className="text-theme" size={24} />
               Recent Pages
             </h3>
-            <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium">
+            <span className="text-xs bg-lightThemeBg text-theme px-3 py-1 rounded-full font-medium font-primary">
               {pages.length} total
             </span>
           </div>
           <div className="space-y-3">
             {pages.slice(0, 5).map((page) => (
-              <div key={page.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition border border-gray-200">
+              <div key={page.id} className="flex justify-between items-center p-4 bg-quaternary rounded-lg hover:bg-theme hover:bg-opacity-5 transition border border-theme border-opacity-10">
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-900">{page.name}</p>
-                  <p className="text-sm text-gray-500">{page.description?.substring(0, 50) || 'No description'}...</p>
+                  <p className="font-semibold text-primary font-primary">{page.name}</p>
+                  <p className="text-sm text-tertiary">{page.description?.substring(0, 50) || 'No description'}...</p>
                 </div>
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  className={`px-3 py-1 rounded-full text-xs font-semibold font-primary ${
                     page.status === 'active'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-theme bg-opacity-20 text-theme'
                       : 'bg-red-100 text-red-700'
                   }`}
                 >
@@ -169,7 +169,7 @@ const Dashboard = () => {
               </div>
             ))}
             {pages.length === 0 && (
-              <p className="text-center text-gray-500 py-8">No pages yet</p>
+              <p className="text-center text-tertiary py-8">No pages yet</p>
             )}
           </div>
         </div>
