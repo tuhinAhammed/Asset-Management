@@ -82,7 +82,7 @@ export const authAPI = {
       const mockResponse = await mockAPIService.login({ email, Password: password });
       return { data: mockResponse };
     }
-    return axiosInstance.post('/login', { email, Password: password });
+    return axiosInstance.post('/login', { email, password });
   },
   logout: () =>
     axiosInstance.get('/logout'),
