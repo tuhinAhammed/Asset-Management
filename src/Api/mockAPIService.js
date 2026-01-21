@@ -292,7 +292,9 @@ export const mockAPIService = {
   // ===== AUTH =====
   login: async (credentials) => {
     await delay(DELAY);
-    if (credentials.email === "admin@example.com" && credentials.Password === "12345678") {
+    // Accept both 'password' (lowercase) and 'Password' (capitalized) for compatibility
+    const pwd = credentials.password || credentials.Password;
+    if (credentials.email === "admin@example.com" && pwd === "12345678") {
       // Return properly wrapped response
       return {
         success: true,
