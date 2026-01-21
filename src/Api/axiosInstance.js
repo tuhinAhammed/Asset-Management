@@ -20,7 +20,7 @@ import mockAPIService from './mockAPIService';
  */
 
 // ===== IMPORTANT: Toggle between mock and real API =====
-export const USE_MOCK_DATA = true;  // Set to true to use mock data
+export const USE_MOCK_DATA = false;  // Set to true to use mock data
 
 const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
 // Alternative: const API_BASE_URL = 'http://localhost:8000/api'; // For local backend
@@ -232,6 +232,11 @@ const getMockResponse = async (url, method, data) => {
   // PROFILE
   else if (url.includes('/user') && !url.includes('change-password')) {
     if (method === 'GET') return mockAPIService.getProfile();
+  }
+
+  // SETTINGS
+  else if (url.includes('/settings')) {
+    if (method === 'GET') return mockAPIService.getSettings();
   }
 
   // If no mock found, return null to let real request go through
