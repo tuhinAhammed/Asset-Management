@@ -186,6 +186,7 @@ The following modules support secure image/file uploads with multipart/form-data
 - `src/Data/mockCareersData.js` - Mock job data and utilities (241 lines)
 
 **Resume Submission Features:**
+
 - ✅ Full Name, Email, Phone, Cover Letter form fields
 - ✅ Resume file upload (PDF, DOC, DOCX - max 5MB)
 - ✅ File type and size validation
