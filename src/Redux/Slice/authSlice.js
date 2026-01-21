@@ -51,38 +51,47 @@ import { authAPI } from '../../Api/endpoints';
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }, { rejectWithValue }) => {
   try {
+    console.log('🔐 Login thunk started with email:', email);
     const response = await authAPI.login(email, password);
+    console.log('📡 API Response:', response);
     
-    // Handle different possible response structures
-    let token = null;
-    let user = null;
     const responseData = response.data;
+    console.log('📦 Response Data:', responseData);
     
-    // Check if response is successful
-    if (!responseData.success) {
+    // Handle both response formats:
+    // Format 1: { success: true, token, user, ... } (our mock format)
+    // Format 2: { status: 200, token, user, message, ... } (real API format)
+    const isSuccessful = responseData.success === true || responseData.status === 200;
+    
+    if (!isSuccessful) {
+      console.error('❌ Response not successful:', responseData.message);
       return rejectWithValue(responseData.message || 'Login failed');
     }
     
-    // Extract token and user from successful response
-    if (responseData.token) {
-      token = responseData.token;
-      user = responseData.user;
-    } else if (responseData.data?.token) {
-      token = responseData.data.token;
-      user = responseData.data.user;
-    }
+    const token = responseData.token;
+    const user = responseData.user;
+    
+    console.log('✅ Token extracted:', token);
     
     if (!token) {
+      console.error('❌ No token found in response');
       return rejectWithValue('No token in API response');
     }
     
+    console.log('🎫 Token:', token);
+    
+    // Store in localStorage immediately for ProtectedRoute fallback
     localStorage.setItem('authToken', token);
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
     }
     
-    return { token, user };
+    // Return both token and user for Redux state
+    const result = { token, user };
+    console.log('✅ Returning from thunk:', result);
+    return result;
   } catch (error) {
+    console.error('💥 Login thunk error:', error);
     const errorMsg = error.response?.data?.message || error.message || 'Login failed';
     return rejectWithValue(errorMsg);
   }
@@ -169,11 +178,17 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
+        console.log('🎉 Login fulfilled - payload:', action.payload);
         state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token || action.payload.authorization?.token;
+        // Ensure we have both token and user
+        const payload = action.payload;
+        state.token = payload.token;
+        state.user = payload.user;
+        state.error = null;
         state.successMessage = 'Login successful';
-        // Ensure persistence
+        console.log('✅ Redux state updated - token:', state.token);
+        
+        // Double-check persistence
         if (state.token) {
           localStorage.setItem('authToken', state.token);
         }

@@ -9,19 +9,26 @@ import { toast } from 'react-toastify';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, user } = useSelector((state) => state.auth);
+  const { loading, error, token } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  // Redirect if already logged in
+  // Debug: Log auth state changes
   useEffect(() => {
-    if (user) {
-      navigate('/admin/dashboard');
+    console.log('Auth State:', { loading, error, token, hasToken: !!token });
+  }, [loading, error, token]);
+
+  // SINGLE redirect - watch token and redirect when it changes
+  useEffect(() => {
+    console.log('useEffect triggered - token:', token);
+    if (token) {
+      console.log('Token found! Navigating to dashboard...');
+      navigate('/admin/dashboard', { replace: true });
     }
-  }, [user, navigate]);
+  }, [token, navigate]);
 
   const handleInputChange = (name, value) => {
     setFormData({
@@ -37,20 +44,14 @@ const Login = () => {
       return;
     }
     try {
-      const result = await dispatch(login(formData)).unwrap();
+      // Dispatch login and wait for it to complete
+      await dispatch(login(formData)).unwrap();
       
-      // Verify we got a token back from the API
-      if (result?.token) {
-        toast.success('Login successful');
-        // Navigate immediately - Redux state will update and ProtectedRoute will allow access
-        setTimeout(() => {
-          navigate('/admin/dashboard', { replace: true });
-        }, 200);
-      } else {
-        toast.error('Invalid login response');
-      }
+      // Don't navigate here - let useEffect handle it
+      // Just show success message
+      toast.success('Login successful');
     } catch (err) {
-      toast.error(error || 'Login failed');
+      toast.error(err || error || 'Login failed');
     }
   };
 

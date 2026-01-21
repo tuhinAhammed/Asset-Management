@@ -293,7 +293,13 @@ export const mockAPIService = {
   login: async (credentials) => {
     await delay(DELAY);
     if (credentials.email === "admin@example.com" && credentials.Password === "12345678") {
-      return mockData.mockAuthResponse;
+      // Return properly wrapped response
+      return {
+        success: true,
+        message: "Login successful",
+        token: mockData.mockAuthResponse.token,
+        user: mockData.mockAuthResponse.user
+      };
     }
     return mockResponse({}, 400, "Provided Credentials are Incorrect");
   },
