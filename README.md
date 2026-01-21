@@ -7,16 +7,19 @@ A production-ready React admin dashboard for managing digital assets. Built with
 ## 📋 Quick Start
 
 ### Installation
+
 ```bash
 npm install
 npm run dev
 ```
 
 ### Login Credentials
+
 - **Email:** admin@example.com
 - **Password:** 12345678 (mock) or your real backend credentials
 
 ### Access Dashboard
+
 - **URL:** http://localhost:5173
 - **Login Page:** http://localhost:5173/admin/login
 - **Dashboard:** http://localhost:5173/admin/dashboard
@@ -28,13 +31,15 @@ npm run dev
 ### Switch Between Real and Mock API
 
 **Use Real API (Production):**
+
 ```javascript
 // src/Api/axiosInstance.js
 export const USE_MOCK_DATA = false;
-const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
+const API_BASE_URL = "https://asset-api.shelaigor.com/api";
 ```
 
 **Use Mock API (Development):**
+
 ```javascript
 // src/Api/axiosInstance.js
 export const USE_MOCK_DATA = true;
@@ -93,6 +98,7 @@ src/
 6. **Token sent with requests** → All subsequent API calls
 
 ### Files Involved
+
 - `src/Pages/Admin/Login.jsx` - Login component
 - `src/Redux/Slice/authSlice.js` - Auth state management
 - `src/Components/ProtectedRoute.jsx` - Route protection
@@ -102,31 +108,33 @@ src/
 
 ## 🛠️ Admin Pages (16 Total)
 
-| Page | Route | Feature |
-|---|---|---|
-| Dashboard | `/admin/dashboard` | Stats & overview |
-| Products | `/admin/products` | CRUD + file upload |
-| Categories | `/admin/categories` | CRUD |
-| Pages | `/admin/pages` | CRUD |
-| Banners | `/admin/banners` | CRUD + file upload |
-| Careers | `/admin/careers` | CRUD |
-| Components | `/admin/components` | CRUD |
-| Menu | `/admin/menu` | CRUD |
-| Content | `/admin/content` | CRUD |
-| Profile | `/admin/profile` | User profile |
-| Settings | `/admin/settings` | System settings |
-| Change Password | `/admin/change-password` | Security |
+| Page            | Route                    | Feature            |
+| --------------- | ------------------------ | ------------------ |
+| Dashboard       | `/admin/dashboard`       | Stats & overview   |
+| Products        | `/admin/products`        | CRUD + file upload |
+| Categories      | `/admin/categories`      | CRUD               |
+| Pages           | `/admin/pages`           | CRUD               |
+| Banners         | `/admin/banners`         | CRUD + file upload |
+| Careers         | `/admin/careers`         | CRUD               |
+| Components      | `/admin/components`      | CRUD               |
+| Menu            | `/admin/menu`            | CRUD               |
+| Content         | `/admin/content`         | CRUD               |
+| Profile         | `/admin/profile`         | User profile       |
+| Settings        | `/admin/settings`        | System settings    |
+| Change Password | `/admin/change-password` | Security           |
 
 ---
 
 ## 📡 API Endpoints
 
 All endpoints require authentication token:
+
 ```
 Authorization: Bearer {token}
 ```
 
 ### Main Endpoints
+
 ```
 POST   /login                              # User login
 GET    /logout                             # User logout
@@ -155,23 +163,26 @@ GET/POST/PUT/DELETE   /admin/content/*     # Content
 ✅ **Real-time Data** - Redux state management  
 ✅ **Responsive Design** - Tailwind CSS + Material Design  
 ✅ **Error Handling** - Comprehensive error messages  
-✅ **Mock Data** - Test without backend  
+✅ **Mock Data** - Test without backend
 
 ---
 
 ## 🚀 Build & Deploy
 
 ### Development
+
 ```bash
 npm run dev
 ```
 
 ### Production Build
+
 ```bash
 npm run build
 ```
 
 ### Preview Build
+
 ```bash
 npm run preview
 ```
