@@ -22,6 +22,7 @@ import OurStory from "./Pages/OurStory.jsx";
 import WhyUs from "./Pages/WhyUs.jsx";
 import OurBusiness from "./Pages/OurBusiness.jsx";
 import Career from "./Pages/Career.jsx";
+import NewsEvents from "./Pages/NewsEvents.jsx";
 
 // Admin Pages
 import AdminLayout from './Components/Admin/AdminLayout.jsx';
@@ -39,6 +40,8 @@ import Content from './Pages/Admin/Content.jsx';
 import Profile from './Pages/Admin/Profile.jsx';
 import ChangePassword from './Pages/Admin/ChangePassword.jsx';
 import Settings from './Pages/Admin/Settings.jsx';
+import NewsDetail from './Pages/NewsDetail.jsx';
+import EventDetail from './Pages/EventDetail.jsx';
 
 const root = document.getElementById("root");
 
@@ -64,6 +67,9 @@ ReactDOM.createRoot(root).render(
         <Route path="why-us" element={<WhyUs />} />
         <Route path="our-business" element={<OurBusiness />} />
         <Route path="career" element={<Career />} />
+        <Route path="news-events" element={<NewsEvents />} />
+        <Route path="news/:slug" element={<NewsDetail />} />
+        <Route path="event/:slug" element={<EventDetail />} />
         <Route path="our-story" element={<OurStory />} />
         <Route path="*" element={<Error />} />
       </Route>

@@ -233,6 +233,7 @@ const Header = () => {
                   { name: "Services", link: "/services" },
                   { name: "Projects", link: "/projects" },
                   { name: "Career", link: "/career" },
+                  { name: "News & Events", link: "/news-events" },
                   { name: "About Us", link: "/about-us" },
                   { name: "Blogs", link: "/blogs" },
                 ].map((item, i) => (
