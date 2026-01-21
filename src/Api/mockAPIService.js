@@ -244,13 +244,67 @@ export const mockAPIService = {
   // ===== BANNERS =====
   getBanners: async () => {
     await delay(DELAY);
-    return mockResponse({ banner: { contents: mockData.mockBanners } });
+    return mockResponse({ data: mockData.mockBanners });
+  },
+
+  createBanner: async (data) => {
+    await delay(DELAY);
+    const newBanner = { 
+      id: Math.max(...mockData.mockBanners.map(b => b.id), 0) + 1, 
+      ...data,
+      created_at: new Date().toISOString() 
+    };
+    mockData.mockBanners.push(newBanner);
+    return mockResponse(newBanner, 201, "Banner created successfully");
+  },
+
+  updateBanner: async (id, data) => {
+    await delay(DELAY);
+    const index = mockData.mockBanners.findIndex(b => b.id === parseInt(id));
+    if (index === -1) return mockResponse({}, 404, "Banner not found");
+    mockData.mockBanners[index] = { ...mockData.mockBanners[index], ...data };
+    return mockResponse(mockData.mockBanners[index], 200, "Banner updated successfully");
+  },
+
+  deleteBanner: async (id) => {
+    await delay(DELAY);
+    const index = mockData.mockBanners.findIndex(b => b.id === parseInt(id));
+    if (index === -1) return mockResponse({}, 404, "Banner not found");
+    mockData.mockBanners.splice(index, 1);
+    return mockResponse({}, 200, "Banner deleted successfully");
   },
 
   // ===== CAREERS =====
   getCareers: async () => {
     await delay(DELAY);
     return mockResponse({ data: mockData.mockCareers });
+  },
+
+  createCareer: async (data) => {
+    await delay(DELAY);
+    const newCareer = { 
+      id: Math.max(...mockData.mockCareers.map(c => c.id), 0) + 1, 
+      ...data,
+      created_at: new Date().toISOString() 
+    };
+    mockData.mockCareers.push(newCareer);
+    return mockResponse(newCareer, 201, "Career created successfully");
+  },
+
+  updateCareer: async (id, data) => {
+    await delay(DELAY);
+    const index = mockData.mockCareers.findIndex(c => c.id === parseInt(id));
+    if (index === -1) return mockResponse({}, 404, "Career not found");
+    mockData.mockCareers[index] = { ...mockData.mockCareers[index], ...data };
+    return mockResponse(mockData.mockCareers[index], 200, "Career updated successfully");
+  },
+
+  deleteCareer: async (id) => {
+    await delay(DELAY);
+    const index = mockData.mockCareers.findIndex(c => c.id === parseInt(id));
+    if (index === -1) return mockResponse({}, 404, "Career not found");
+    mockData.mockCareers.splice(index, 1);
+    return mockResponse({}, 200, "Career deleted successfully");
   },
 
   // ===== FAQS =====
