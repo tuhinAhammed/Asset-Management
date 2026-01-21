@@ -20,7 +20,7 @@ import mockAPIService from './mockAPIService';
  */
 
 // ===== IMPORTANT: Toggle between mock and real API =====
-export const USE_MOCK_DATA = true;  // Set to false to use real API
+export const USE_MOCK_DATA = false;  // Set to false to use real API
 
 const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
 // Alternative: const API_BASE_URL = 'http://localhost:8000/api'; // For local backend
