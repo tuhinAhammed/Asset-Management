@@ -52,7 +52,6 @@ import { authAPI } from '../../Api/endpoints';
 export const login = createAsyncThunk('auth/login', async ({ email, password }, { rejectWithValue }) => {
   try {
     const response = await authAPI.login(email, password);
-    console.log('API Response:', response.data);
     
     // Handle different possible response structures
     let token = null;
@@ -61,7 +60,6 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
     
     // Check if response is successful
     if (!responseData.success) {
-      console.error('Login failed:', responseData.message);
       return rejectWithValue(responseData.message || 'Login failed');
     }
     
@@ -74,11 +72,8 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
       user = responseData.data.user;
     }
     
-    console.log('Login successful. Extracted Token:', token ? 'Present' : 'Missing');
-    
     if (!token) {
-      console.error('No token in response. Full response:', responseData);
-      return rejectWithValue('No token in API response. Check browser console for details.');
+      return rejectWithValue('No token in API response');
     }
     
     localStorage.setItem('authToken', token);
@@ -88,11 +83,6 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
     
     return { token, user };
   } catch (error) {
-    console.error('Login error details:', {
-      status: error.response?.status,
-      data: error.response?.data,
-      message: error.message
-    });
     const errorMsg = error.response?.data?.message || error.message || 'Login failed';
     return rejectWithValue(errorMsg);
   }
