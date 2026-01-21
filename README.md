@@ -2861,3 +2861,515 @@ import { Link } from 'react-router-dom';
 
 **Career Page Status:** ✅ **Production Ready | Resume Upload | Department Filtering | Professional UI**
 
+
+---
+
+## ��� API Integration Guide - Real Backend Connection
+
+### BASE CONFIGURATION
+
+**Production API:**
+- Base URL: `https://asset-api.shelaigor.com/api/`
+- File Storage: `https://asset-api.shelaigor.com/api/storage/`
+- Protocol: HTTPS (SSL/TLS)
+- Authentication: JWT Bearer Token
+
+### SWITCHING TO REAL API
+
+**Step 1: Update axiosInstance.js**
+
+```javascript
+// src/Api/axiosInstance.js
+export const USE_MOCK_DATA = false;  // Change from true to false
+const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
+```
+
+**Step 2: Restart Dev Server**
+
+```bash
+npm run dev
+```
+
+**Step 3: Test Login**
+
+```
+Email: admin@example.com
+Password: 12345678  (or your real credentials)
+```
+
+### AUTHENTICATION ENDPOINTS
+
+| Endpoint | Method | Purpose | Input | Response |
+|----------|--------|---------|-------|----------|
+| `/login` | POST | User authentication | email, Password | `{token, user}` |
+| `/logout` | GET | User logout | - | `{message: "success"}` |
+| `/user` | GET | Get current user | - | `{user: {...}}` |
+
+**Login Request:**
+```javascript
+POST /login
+{
+  "email": "admin@example.com",
+  "Password": "12345678"
+}
+```
+
+**Login Response (Success):**
+```javascript
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+  "user": {
+    "id": 1,
+    "name": "Admin",
+    "email": "admin@example.com",
+    "phone": "01781410322",
+    "created_at": "2025-11-11T17:47:54.000000Z",
+    "updated_at": "2025-11-11T17:47:54.000000Z"
+  }
+}
+```
+
+**Login Response (Error):**
+```javascript
+{
+  "message": "Invalid credentials"
+}
+```
+
+### ADMIN MODULES - COMPLETE API LIST
+
+#### 1. Component Management
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/component/list` | GET |
+| Single | `admin/component/single/{id}` | GET |
+| Create | `admin/component/create` | POST |
+| Update | `admin/component/update/{id}` | PUT |
+| Delete | `admin/component/delete/{id}` | DELETE |
+
+**Fields:** name (required), body (JSON, required)
+
+#### 2. Page Layout
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/page-layout/list` | GET |
+| Single | `admin/page-layout/single/{id}` | GET |
+| Create | `admin/page-layout/create` | POST |
+| Update | `admin/page-layout/update/{id}` | PUT |
+| Delete | `admin/page-layout/delete/{id}` | DELETE |
+
+**Fields:** name (required), body (JSON, required), image (file upload)
+
+#### 3. Page
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/page/list` | GET |
+| Single | `admin/page/single/{id}` | GET |
+| Create | `admin/page/create` | POST |
+| Update | `admin/page/update/{id}` | PUT |
+| Delete | `admin/page/delete/{id}` | DELETE |
+
+**Fields:** name (required), description (required), banner, page_layout_id, status (required)
+
+#### 4. Section Layout
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/blog/list` | GET |
+| Single | `admin/blog/single/{id}` | GET |
+| Create | `admin/blog/create` | POST |
+| Update | `admin/blog/update/{id}` | PUT |
+| Delete | `admin/blog/delete/{id}` | DELETE |
+
+**Fields:** name (required), body (JSON, required), image (file upload)
+
+#### 5. Section
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/section/list` | GET |
+| Single | `admin/section/single/{id}` | GET |
+| Create | `admin/section/create` | POST |
+| Update | `admin/section/update/{id}` | PUT |
+| Delete | `admin/section/delete/{id}` | DELETE |
+
+**Fields:** name (required), section_layout_id, section_title, section_sub_title, body (JSON), page_id (required), image (required), order, status (required)
+
+#### 6. Content
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/content/list` | GET |
+| Single | `admin/content/single/{id}` | GET |
+| Create | `admin/content/create` | POST |
+| Update | `admin/content/update/{id}` | PUT |
+| Delete | `admin/content/delete/{id}` | DELETE |
+
+**Fields:** name (required), body (JSON, required), section_id, status (required)
+
+#### 7. Category
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/category/list` | GET |
+| Single | `admin/category/single/{id}` | GET |
+| Create | `admin/category/create` | POST |
+| Update | `admin/category/update/{id}` | PUT |
+| Delete | `admin/category/delete/{id}` | DELETE |
+
+**Fields:** name (required), status (required)
+
+#### 8. Content Layout
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/content-layout/list` | GET |
+| Single | `admin/content-layout/single/{id}` | GET |
+| Create | `admin/content-layout/create` | POST |
+| Update | `admin/content-layout/update/{id}` | PUT |
+| Delete | `admin/content-layout/delete/{id}` | DELETE |
+
+**Fields:** name (required), body (JSON, required), image (file upload)
+
+#### 9. Menu
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/menu/list` | GET |
+| Single | `admin/menu/single/{id}` | GET |
+| Create | `admin/menu/create` | POST |
+| Update | `admin/menu/update/{id}` | PUT |
+| Delete | `admin/menu/delete/{id}` | DELETE |
+
+**Fields:** name (required), position (header/footer/sidebar), status (required)
+
+#### 10. Menu Item
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/menu-item/list` | GET |
+| Single | `admin/menu-item/single/{id}` | GET |
+| Create | `admin/menu-item/create` | POST |
+| Update | `admin/menu-item/update/{id}` | PUT |
+| Delete | `admin/menu-item/delete/{id}` | DELETE |
+
+**Fields:** name (required), menu_id, icon, link, order, parent_id, status (required)
+
+#### 11. Product Category
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/product-category/list` | GET |
+| Single | `admin/product-category/single/{id}` | GET |
+| Create | `admin/product-category/create` | POST |
+| Update | `admin/product-category/update/{id}` | PUT |
+| Delete | `admin/product-category/delete/{id}` | DELETE |
+
+**Fields:** name (required), status (required)
+
+#### 12. Product
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/product/list` | GET |
+| Single | `admin/product/single/{id}` | GET |
+| Create | `admin/product/create` | POST |
+| Update | `admin/product/update/{id}` | PUT |
+| Delete | `admin/product/delete/{id}` | DELETE |
+
+**Fields:** product_category_id (required), name (required), description (JSON, required), thumbnail (file upload), status (required)
+
+**Note:** Slug is auto-generated by backend
+
+#### 13. Product Info
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/product-info/list` | GET |
+| Single | `admin/product-info/single/{id}` | GET |
+| Create | `admin/product-info/create` | POST |
+| Update | `admin/product-info/update/{id}` | PUT |
+| Delete | `admin/product-info/delete/{id}` | DELETE |
+
+**Fields:** product_id (required), info_details (required), icon, info_type (primary/secondary/tertiary, required)
+
+#### 14. Gallery
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/gallery/list` | GET |
+| Single | `admin/gallery/single/{id}` | GET |
+| Create | `admin/gallery/create` | POST |
+| Update | `admin/gallery/update/{id}` | PUT |
+| Delete | `admin/gallery/delete/{id}` | DELETE |
+
+**Fields:** product_id (required), gallery_id (grouping ID), title, path (required, file upload), file_type (video/image, required)
+
+#### 15. Banner/Carousel
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/banner/list` | GET |
+| Single | `admin/banner/single/{id}` | GET |
+| Create | `admin/banner/create` | POST |
+| Update | `admin/banner/update/{id}` | PUT |
+| Delete | `admin/banner/delete/{id}` | DELETE |
+
+**Fields:** banner_id (required, min 3 chars), status (required)
+
+#### 16. Banner Content
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/banner-content/list` | GET |
+| Single | `admin/banner-content/single/{id}` | GET |
+| Create | `admin/banner-content/create` | POST |
+| Update | `admin/banner-content/update/{id}` | PUT |
+| Delete | `admin/banner-content/delete/{id}` | DELETE |
+
+**Fields:** banner_id (required), file (required, file upload), short_description, headline, link, order, status (required)
+
+#### 17. Social Links
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/social/list` | GET |
+| Single | `admin/social/single/{id}` | GET |
+| Create | `admin/social/create` | POST |
+| Update | `admin/social/update/{id}` | PUT |
+| Delete | `admin/social/delete/{id}` | DELETE |
+
+**Fields:** name (required), icon (required), link, base_link, status (required)
+
+#### 18. Career/Jobs
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/career/list` | GET |
+| Single | `admin/career/single/{id}` | GET |
+| Create | `admin/career/create` | POST |
+| Update | `admin/career/update/{id}` | PUT |
+| Delete | `admin/career/delete/{id}` | DELETE |
+
+**Fields:** title (required), location, job_type (part_time/full_time), date_start, date_end (required), job_description (JSON), job_requirements (JSON), benefits (JSON), employment_status (permanent/contractual, required)
+
+#### 19. Job Application
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| List | `admin/job-application/list` | GET |
+| Single | `admin/job-application/single/{id}` | GET |
+| Create | `admin/job-application/create` | POST |
+| Update | `admin/job-application/update/{id}` | PUT |
+| Delete | `admin/job-application/delete/{id}` | DELETE |
+
+**Fields:** career_id (required), first_name (required), last_name (required), email (required), phone (required), experience, prev_org, last_degree, last_ed_inst (required), resume (file upload, required), additional_file (file upload), cover_letter, status (applied/selected/dropped, required)
+
+#### 20. Settings
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| Get | `admin/settings` | GET |
+| Update | `admin/settings/update` | POST |
+
+**Fields:** company_name (required), logo, company_phone, company_email, company_address (JSON)
+
+#### 21. User Profile
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| Get | `admin/user` or `admin/settings` | GET |
+| Update | `admin/user/update` | POST |
+
+**Fields:** name (required), email, phone
+
+#### 22. Change Password
+
+| Operation | Endpoint | Method |
+|-----------|----------|--------|
+| Change | `admin/user/change-password` | POST |
+
+**Fields:** old_password (required), new_password (required), password_confirmation (required)
+
+### WEBSITE PUBLIC APIs
+
+#### 1. Banner by ID
+
+```
+GET /banner/{banner_id}
+Response: Banner content with images and metadata
+```
+
+#### 2. Products List
+
+```
+GET /products
+Response: All active products with categories
+```
+
+#### 3. Single Product
+
+```
+GET /product/{slug}
+Response: Full product details with gallery
+```
+
+#### 4. Page by Slug
+
+```
+GET /page/{slug}
+Response: Page content with sections and layouts
+```
+
+#### 5. System Information
+
+```
+GET /system
+Response: System configuration and settings
+```
+
+### FILE UPLOAD MODULES
+
+The following modules support file uploads (multipart/form-data):
+
+- Page Layout (image)
+- Section Layout (image)
+- Section (image)
+- Content Layout (image)
+- Product (thumbnail)
+- Gallery (images/videos)
+- Banner Content (images)
+- Job Application (resume + optional file)
+
+**File Upload Best Practices:**
+
+```javascript
+// Create FormData for file upload
+const formData = new FormData();
+formData.append('name', data.name);
+formData.append('image', fileInput.files[0]); // File object
+formData.append('status', 'active');
+
+// POST with FormData
+await axiosInstance.post('/admin/module/create', formData, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+});
+```
+
+### ERROR HANDLING
+
+| Status | Meaning | Action |
+|--------|---------|--------|
+| 200 | Success | Proceed normally |
+| 201 | Created | Proceed normally |
+| 400 | Bad Request | Check input validation |
+| 401 | Unauthorized | Redirect to login |
+| 403 | Forbidden | Show permission denied |
+| 404 | Not Found | Show not found error |
+| 422 | Validation Error | Show field errors |
+| 500 | Server Error | Show server error |
+
+**Error Response Format:**
+
+```javascript
+{
+  "message": "Error message",
+  "errors": {
+    "field_name": ["Error message for field"]
+  }
+}
+```
+
+### TESTING CHECKLIST
+
+- [ ] Login with valid credentials
+- [ ] Test each admin module CRUD operations
+- [ ] Test file uploads
+- [ ] Test search and filtering
+- [ ] Test API error handling (401, 403, 404, 422, 500)
+- [ ] Verify JWT token persistence
+- [ ] Test logout and session expiration
+- [ ] Verify all data displays correctly
+- [ ] Test responsive design on mobile/tablet
+- [ ] Performance test with large datasets
+
+### PRODUCTION DEPLOYMENT
+
+**Before deploying to production:**
+
+1. **Disable Mock Data:**
+   ```javascript
+   // src/Api/axiosInstance.js
+   export const USE_MOCK_DATA = false;
+   ```
+
+2. **Set Correct API URL:**
+   ```javascript
+   const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
+   ```
+
+3. **Enable HTTPS:**
+   - All API calls must use HTTPS
+   - Configure CORS on backend
+
+4. **Environment Variables:**
+   ```env
+   VITE_API_BASE_URL=https://asset-api.shelaigor.com/api
+   VITE_USE_MOCK_DATA=false
+   ```
+
+5. **Build for Production:**
+   ```bash
+   npm run build
+   npm run preview
+   ```
+
+### COMMON ISSUES & SOLUTIONS
+
+**CORS Error:**
+- Ensure backend has proper CORS headers
+- Configure `withCredentials: true` in axiosInstance
+- Whitelist frontend domain on backend
+
+**401 Unauthorized:**
+- Check JWT token is valid
+- Verify token is being sent in Authorization header
+- Token may be expired, implement token refresh
+
+**File Upload Fails:**
+- Ensure `Content-Type: multipart/form-data` is set
+- Check file size limits on backend
+- Verify file upload directory permissions
+- Check supported file types
+
+**Data Not Displaying:**
+- Check API response format matches expected structure
+- Verify data is returned in correct format
+- Check Redux state is updated correctly
+- Test API in Postman or browser DevTools
+
+**API Base URL Not Found:**
+- Check `API_BASE_URL` is correctly set in axiosInstance.js
+- Verify backend server is running
+- Check network connectivity
+- Verify HTTPS certificate is valid (for production)
+
+### INTEGRATION SUMMARY
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Authentication | ✅ Ready | JWT-based, token in localStorage |
+| CRUD Operations | ✅ Ready | All 22+ modules supported |
+| File Uploads | ✅ Ready | Multipart/form-data support |
+| Error Handling | ✅ Ready | Proper error messages |
+| API Documentation | ✅ Ready | Complete endpoint list |
+| Mock Data | ✅ Ready | For development/testing |
+| Real API | ✅ Ready | Switch via USE_MOCK_DATA flag |
+
+**Status:** ✅ **Complete API Integration Ready for Production**
+

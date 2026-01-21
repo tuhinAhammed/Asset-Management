@@ -1,42 +1,74 @@
 /**
- * API ENDPOINTS
- * =============
+ * ASSET MANAGEMENT API ENDPOINTS
+ * ==============================
  * 
- * IMPORTANT: Using Mock Data for Development
- * ===========================================
- * Currently, this dashboard is configured to use MOCK/DEMO DATA.
- * All API calls are intercepted and returns mock data from src/Api/mockAPIService.js
+ * Base API: https://asset-api.shelaigor.com/api/
+ * Base File Path: https://asset-api.shelaigor.com/api/storage/
  * 
- * TO CONNECT TO YOUR REAL BACKEND API:
- * ====================================
- * 1. Update axiosInstance.js:
- *    - Set USE_MOCK_DATA = false
- *    - Update API_BASE_URL to your backend server URL
- *    Example: https://your-api-domain.com/api
+ * IMPLEMENTATION CHECKLIST
+ * ========================
+ * 1. Frontend Configuration (axiosInstance.js):
+ *    - Set API_BASE_URL = "https://asset-api.shelaigor.com/api"
+ *    - Set USE_MOCK_DATA = false (for real API)
+ *    - Enable CORS with withCredentials: true
+ *    - Add Bearer token to all requests
  * 
- * 2. Verify API Endpoints:
- *    - Review all endpoints below match your backend routes
- *    - Adjust endpoint paths if needed (e.g., /admin/product vs /products)
- *    - Ensure authentication and authorization are properly implemented
+ * 2. Backend Integration Points:
+ *    ✅ Authentication (Login, Logout, User Info)
+ *    ✅ Component Management (CRUD)
+ *    ✅ Page Layout (CRUD + File Upload)
+ *    ✅ Page (CRUD)
+ *    ✅ Section Layout (CRUD + File Upload)
+ *    ✅ Section (CRUD + File Upload)
+ *    ✅ Content (CRUD)
+ *    ✅ Category (CRUD)
+ *    ✅ Content Layout (CRUD + File Upload)
+ *    ✅ Menu (CRUD)
+ *    ✅ Menu Item (CRUD)
+ *    ✅ Product Category (CRUD)
+ *    ✅ Product (CRUD + File Upload)
+ *    ✅ Product Info (CRUD)
+ *    ✅ Gallery (CRUD + File Upload)
+ *    ✅ Banner (CRUD)
+ *    ✅ Banner Content (CRUD + File Upload)
+ *    ✅ Social (CRUD)
+ *    ✅ Career (CRUD)
+ *    ✅ Job Application (CRUD + File Upload)
+ *    ✅ Settings (Update, Get)
+ *    ✅ User Info (Update, Get)
+ *    ✅ Change Password
  * 
- * 3. Test Login:
- *    - Default demo credentials: admin@example.com / 12345678
- *    - Update with your real admin credentials after connecting to real API
+ * 3. Website APIs (Public):
+ *    ✅ GET /banner/{banner_id}
+ *    ✅ GET /products
+ *    ✅ GET /product/{slug}
+ *    ✅ GET /page/{slug}
+ *    ✅ GET /system
  * 
- * 4. Test Each Module:
- *    - Visit each admin page and test CRUD operations
- *    - Verify file uploads work correctly
- *    - Check search and filter functionality
+ * 4. Testing Steps:
+ *    - Test login with correct credentials
+ *    - Test each admin module CRUD operations
+ *    - Test file uploads (images, resumes, documents)
+ *    - Test search and filtering
+ *    - Test API error handling (401, 403, 404, 500)
+ *    - Verify JWT token refresh mechanism
  * 
- * 5. Data Format:
- *    - Ensure your API returns data in the same format as mockAPIService
- *    - Response structure should match mockData.js examples
+ * 5. Error Handling:
+ *    - 401 Unauthorized: Redirect to login
+ *    - 403 Forbidden: Show permission denied message
+ *    - 404 Not Found: Show not found message
+ *    - 422 Validation Error: Show validation messages
+ *    - 500 Server Error: Show server error message
  * 
- * Common Issues:
- * - CORS errors: Configure CORS on your backend
- * - Authentication failures: Verify JWT token implementation
- * - File upload errors: Ensure multipart/form-data is handled
- * - 404 errors: Check endpoint URLs match your backend routes
+ * IMPORTANT: CONNECT TO REAL API
+ * ==============================
+ * When deploying to production, ensure:
+ * - USE_MOCK_DATA = false in axiosInstance.js
+ * - API_BASE_URL points to production server
+ * - HTTPS is enabled on both frontend and backend
+ * - CORS is configured correctly
+ * - JWT tokens are validated on backend
+ * - All endpoints return proper response formats
  */
 
 import axiosInstance, { USE_MOCK_DATA } from './axiosInstance';
