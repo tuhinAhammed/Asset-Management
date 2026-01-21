@@ -2064,13 +2064,13 @@ A professional, production-ready Career page with modern component-based archite
 
 ### Implementation Files
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `src/Pages/Career.jsx` | 302 | Main career page component |
-| `src/Components/Careers/JobCard.jsx` | 125 | Individual job card display |
-| `src/Components/Careers/DepartmentFilter.jsx` | 181 | Department filtering component |
-| `src/Components/Careers/ResumeModal.jsx` | 344 | Resume submission modal with file upload |
-| `src/Data/mockCareersData.js` | 241 | Mock job data and helper functions |
+| File                                          | Lines | Purpose                                  |
+| --------------------------------------------- | ----- | ---------------------------------------- |
+| `src/Pages/Career.jsx`                        | 302   | Main career page component               |
+| `src/Components/Careers/JobCard.jsx`          | 125   | Individual job card display              |
+| `src/Components/Careers/DepartmentFilter.jsx` | 181   | Department filtering component           |
+| `src/Components/Careers/ResumeModal.jsx`      | 344   | Resume submission modal with file upload |
+| `src/Data/mockCareersData.js`                 | 241   | Mock job data and helper functions       |
 
 ### Quick Start
 
@@ -2083,12 +2083,14 @@ npm run dev
 ### Switching to Real API
 
 Update `.env`:
+
 ```env
 VITE_API_BASE_URL=https://your-api.com/api
 VITE_USE_MOCK_CAREERS=false
 ```
 
 Required API endpoint:
+
 ```
 GET /api/careers
 ```
@@ -2096,6 +2098,7 @@ GET /api/careers
 ### Career API Requirements
 
 Backend should return:
+
 ```javascript
 {
   "status": "success",
@@ -2142,6 +2145,7 @@ A **career page-aligned News & Events listing** with professional filtering, res
 
 **Pattern:** Career Page Structure Applied to News & Events  
 **Comparison:**
+
 - Career page: Filter by department → Display job cards in grid
 - News & Events page: Filter by category (All/News/Events) → Display item cards in grid
 
@@ -2187,6 +2191,7 @@ A **career page-aligned News & Events listing** with professional filtering, res
 ### FEATURE BREAKDOWN
 
 **Page-Level Features:**
+
 - ✅ **Tab-Based Filtering** - Switch between News and Events
 - ✅ **List Layout** - Grid-based card layout (responsive)
 - ✅ **Category Badges** - Visual category indicators
@@ -2197,6 +2202,7 @@ A **career page-aligned News & Events listing** with professional filtering, res
 - ✅ **Loading States** - Skeleton/spinner during fetch
 
 **Data Layer Features:**
+
 - ✅ **Environment Variable Switch** - VITE_USE_MOCK_NEWS
 - ✅ **Automatic Fallback** - Uses mock if API fails
 - ✅ **300ms Mock Delay** - Realistic API simulation
@@ -2238,7 +2244,7 @@ VITE_API_BASE_URL=https://your-api   # Real API URL
 
 ```javascript
 // src/Services/newsEventsService.js
-const USE_MOCK_NEWS = import.meta.env.VITE_USE_MOCK_NEWS !== 'false';
+const USE_MOCK_NEWS = import.meta.env.VITE_USE_MOCK_NEWS !== "false";
 
 if (USE_MOCK_NEWS) {
   // Return mock data with simulated delay
@@ -2258,6 +2264,7 @@ if (USE_MOCK_NEWS) {
 ### MOCK CONTENT STRUCTURE
 
 **News Items (6):**
+
 1. React 19: Major Performance Improvements
 2. Web Development Trends in 2025
 3. Chrome DevTools New Features
@@ -2266,6 +2273,7 @@ if (USE_MOCK_NEWS) {
 6. Upcoming JavaScript ES2025 Features
 
 **Event Items (6):**
+
 1. Web Development Summit 2024 (Mar 15-17)
 2. React Advanced Patterns Workshop (Feb 20)
 3. AI & Machine Learning Conference (Apr 10-12)
@@ -2278,17 +2286,41 @@ if (USE_MOCK_NEWS) {
 ```javascript
 // News fields
 {
-  id, title, slug, category, content, excerpt,
-  image, author, status, featured, views,
-  created_at, updated_at, published_at
+  (id,
+    title,
+    slug,
+    category,
+    content,
+    excerpt,
+    image,
+    author,
+    status,
+    featured,
+    views,
+    created_at,
+    updated_at,
+    published_at);
 }
 
 // Event fields
 {
-  id, title, slug, category, description, content,
-  image, status, featured, location, venue,
-  start_date, end_date, speaker_count, attendee_limit,
-  created_at, updated_at
+  (id,
+    title,
+    slug,
+    category,
+    description,
+    content,
+    image,
+    status,
+    featured,
+    location,
+    venue,
+    start_date,
+    end_date,
+    speaker_count,
+    attendee_limit,
+    created_at,
+    updated_at);
 }
 ```
 
@@ -2317,6 +2349,7 @@ VITE_USE_MOCK_NEWS=false npm run dev
 ```
 
 **Why Environment Variables?**
+
 - ✅ No code changes needed to switch modes
 - ✅ Works with CI/CD deployments
 - ✅ Different configs per environment
@@ -2357,57 +2390,58 @@ GET    /api/events/upcoming         # Get upcoming events
 ### SERVICE METHODS (8 Total)
 
 ```javascript
-import { newsEventsService } from '../Services/newsEventsService';
+import { newsEventsService } from "../Services/newsEventsService";
 
 // 1. Get all news
-await newsEventsService.getAllNews()
+await newsEventsService.getAllNews();
 // → { data: [6 news items], total: 6 }
 
 // 2. Get news by slug
-await newsEventsService.getNewsBySlug('react-19-improvements')
+await newsEventsService.getNewsBySlug("react-19-improvements");
 // → { data: { single news item } }
 
 // 3. Get all events
-await newsEventsService.getAllEvents()
+await newsEventsService.getAllEvents();
 // → { data: [6 events], total: 6 }
 
 // 4. Get event by slug
-await newsEventsService.getEventBySlug('web-dev-summit')
+await newsEventsService.getEventBySlug("web-dev-summit");
 // → { data: { single event } }
 
 // 5. Get featured (news + events)
-await newsEventsService.getFeaturedItems()
+await newsEventsService.getFeaturedItems();
 // → { data: [featured items], total: X }
 
 // 6. Get upcoming events only
-await newsEventsService.getUpcomingEvents()
+await newsEventsService.getUpcomingEvents();
 // → { data: [upcoming events], total: X }
 
 // 7. Get combined latest
-await newsEventsService.getCombinedLatest(10)
+await newsEventsService.getCombinedLatest(10);
 // → { data: [10 latest items], total: 10 }
 
 // 8. Check current data source
-newsEventsService.getStatus()
+newsEventsService.getStatus();
 // → { using_mock_data: true, data_source: "MOCK (Development)", ... }
 ```
 
 ### COMPONENT USAGE EXAMPLE
 
 ```javascript
-import { newsEventsService } from '../Services/newsEventsService';
-import { useState, useEffect } from 'react';
+import { newsEventsService } from "../Services/newsEventsService";
+import { useState, useEffect } from "react";
 
 export function NewsEventsPage() {
-  const [activeTab, setActiveTab] = useState('news'); // 'news' or 'events'
+  const [activeTab, setActiveTab] = useState("news"); // 'news' or 'events'
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
-      const result = activeTab === 'news'
-        ? await newsEventsService.getAllNews()
-        : await newsEventsService.getAllEvents();
+      const result =
+        activeTab === "news"
+          ? await newsEventsService.getAllNews()
+          : await newsEventsService.getAllEvents();
 
       if (result.success) {
         setItems(result.data);
@@ -2420,16 +2454,17 @@ export function NewsEventsPage() {
 
   return (
     <>
-      <button onClick={() => setActiveTab('news')}>News</button>
-      <button onClick={() => setActiveTab('events')}>Events</button>
-      
+      <button onClick={() => setActiveTab("news")}>News</button>
+      <button onClick={() => setActiveTab("events")}>Events</button>
+
       {loading && <p>Loading...</p>}
-      {!loading && items.map(item => (
-        <div key={item.id}>
-          <h3>{item.title}</h3>
-          <p>{item.category}</p>
-        </div>
-      ))}
+      {!loading &&
+        items.map((item) => (
+          <div key={item.id}>
+            <h3>{item.title}</h3>
+            <p>{item.category}</p>
+          </div>
+        ))}
     </>
   );
 }
@@ -2470,18 +2505,18 @@ console.log(status);
 
 ### QUALITY METRICS
 
-| Metric | Value |
-|--------|-------|
-| Code Lines | ~650 lines |
-| Test Coverage | Mock data ready |
-| Error Handling | Try-catch + fallback |
-| API Methods | 8 |
-| Dependencies Added | 0 (zero) |
-| Environment Vars | 2 (VITE_USE_MOCK_NEWS, VITE_API_BASE_URL) |
-| Mock Delay | 300ms (realistic) |
-| Data Consistency | ✅ Mock matches API schema |
-| Accessibility | ✅ Semantic HTML, ARIA labels |
-| Responsiveness | ✅ Mobile-first design |
+| Metric             | Value                                     |
+| ------------------ | ----------------------------------------- |
+| Code Lines         | ~650 lines                                |
+| Test Coverage      | Mock data ready                           |
+| Error Handling     | Try-catch + fallback                      |
+| API Methods        | 8                                         |
+| Dependencies Added | 0 (zero)                                  |
+| Environment Vars   | 2 (VITE_USE_MOCK_NEWS, VITE_API_BASE_URL) |
+| Mock Delay         | 300ms (realistic)                         |
+| Data Consistency   | ✅ Mock matches API schema                |
+| Accessibility      | ✅ Semantic HTML, ARIA labels             |
+| Responsiveness     | ✅ Mobile-first design                    |
 
 ### SWITCHING BETWEEN MODES
 
@@ -2521,18 +2556,21 @@ Then deploy: `npm run build && npm run preview`
 ### RECOMMENDATIONS BY ENVIRONMENT
 
 **Local Development:**
+
 - ✅ `VITE_USE_MOCK_NEWS=true`
 - ✅ Rapid UI/UX testing
 - ✅ No backend dependency
 - ✅ Instant feedback
 
 **QA/Staging:**
+
 - ✅ `VITE_USE_MOCK_NEWS=false`
 - ✅ Point to staging API
 - ✅ Real data testing
 - ✅ Performance testing
 
 **Production:**
+
 - ✅ `VITE_USE_MOCK_NEWS=false`
 - ✅ Point to production API
 - ✅ Automatic mock fallback (graceful degradation)
@@ -2596,11 +2634,12 @@ A: Yes! Copy `newsEventsService` pattern for any data type (products, testimonia
 
 ---
 
-## ��� News & Events System - Enterprise Implementation ✅
+## ��� News & Events System - Enterprise Implementation ✅
 
 ### SYSTEM OVERVIEW
 
 A **production-ready News & Events system** featuring:
+
 - ✅ Professional tabbed listing page with React icons
 - ✅ Detail pages for reading full articles and event information
 - ✅ Flexible data layer supporting both mock and real API
@@ -2611,15 +2650,16 @@ A **production-ready News & Events system** featuring:
 
 ### ROUTES & PAGES
 
-| Route | File | Purpose |
-|-------|------|---------|
-| `/news-events` | NewsEvents.jsx | Tab-based listing (News/Events) with professional cards |
-| `/news/:slug` | NewsDetail.jsx | Full news article detail page |
-| `/event/:slug` | EventDetail.jsx | Full event information page |
+| Route          | File            | Purpose                                                 |
+| -------------- | --------------- | ------------------------------------------------------- |
+| `/news-events` | NewsEvents.jsx  | Tab-based listing (News/Events) with professional cards |
+| `/news/:slug`  | NewsDetail.jsx  | Full news article detail page                           |
+| `/event/:slug` | EventDetail.jsx | Full event information page                             |
 
 ### FEATURES
 
 **NewsEvents.jsx (Listing Page):**
+
 - Tab filtering (All / News / Events)
 - Professional React icons (BiNews, MdEventNote, FiCalendar, FiMapPin, FiUser, FiEye)
 - Featured/Urgent badge indicators
@@ -2629,6 +2669,7 @@ A **production-ready News & Events system** featuring:
 - Loading and error states
 
 **NewsDetail.jsx (News Detail Page):**
+
 - Hero image with gradient overlay
 - Breadcrumb navigation + back button
 - Meta information: Author, Date, Views, Share
@@ -2638,6 +2679,7 @@ A **production-ready News & Events system** featuring:
 - Back navigation to listing
 
 **EventDetail.jsx (Event Detail Page):**
+
 - Hero image section with status badges
 - Location, venue, date range display
 - Attendee limit, speaker count info
@@ -2663,16 +2705,16 @@ VITE_API_BASE_URL=https://your-api.com/api
 ### SERVICE METHODS
 
 ```javascript
-import { newsEventsService } from '../Services/newsEventsService';
+import { newsEventsService } from "../Services/newsEventsService";
 
-await newsEventsService.getAllNews()           // All news items
-await newsEventsService.getNewsBySlug(slug)   // Single news by slug
-await newsEventsService.getAllEvents()         // All events
-await newsEventsService.getEventBySlug(slug)  // Single event by slug
-await newsEventsService.getFeaturedItems()     // Featured items
-await newsEventsService.getUpcomingEvents()    // Upcoming events
-await newsEventsService.getCombinedLatest(10) // Latest combined
-await newsEventsService.getStatus()            // Current data source
+await newsEventsService.getAllNews(); // All news items
+await newsEventsService.getNewsBySlug(slug); // Single news by slug
+await newsEventsService.getAllEvents(); // All events
+await newsEventsService.getEventBySlug(slug); // Single event by slug
+await newsEventsService.getFeaturedItems(); // Featured items
+await newsEventsService.getUpcomingEvents(); // Upcoming events
+await newsEventsService.getCombinedLatest(10); // Latest combined
+await newsEventsService.getStatus(); // Current data source
 ```
 
 ### MOCK DATA
@@ -2703,10 +2745,9 @@ GET /api/events/upcoming
 
 **News & Events Status:** ✅ **Production Ready | Detail Pages Implemented | Professional Icons | Flexible API**
 
-
 ---
 
-## ��� Career Page - Professional Implementation ✅
+## ��� Career Page - Professional Implementation ✅
 
 ### OVERVIEW
 
@@ -2714,13 +2755,14 @@ A **production-ready Career page** featuring modern responsive design with compr
 
 ### ROUTES & PAGES
 
-| Route | File | Purpose |
-|-------|------|---------|
+| Route     | File       | Purpose                                |
+| --------- | ---------- | -------------------------------------- |
 | `/career` | Career.jsx | Job listings with department filtering |
 
 ### KEY FEATURES
 
 **Career Page (Career.jsx - 302 lines):**
+
 - Breadcrumb navigation for SEO
 - Department-based filtering (6 categories)
 - Responsive grid layout (1-3 columns)
@@ -2734,6 +2776,7 @@ A **production-ready Career page** featuring modern responsive design with compr
 - Call-to-action sections
 
 **Job Card Component (JobCard.jsx - 125 lines):**
+
 - Job metadata display (location, type, deadline)
 - Urgency badges (red for < 7 days)
 - Status indicators (open/closed)
@@ -2741,6 +2784,7 @@ A **production-ready Career page** featuring modern responsive design with compr
 - Responsive design
 
 **Department Filter (DepartmentFilter.jsx - 181 lines):**
+
 - Desktop: Sticky sidebar buttons
 - Mobile: Dropdown selector
 - Result count display
@@ -2748,6 +2792,7 @@ A **production-ready Career page** featuring modern responsive design with compr
 - Smooth filtering
 
 **Resume Modal (ResumeModal.jsx - 244 lines) ⭐:**
+
 - Full name, email, phone fields
 - Cover letter textarea
 - Resume file upload (PDF, DOC, DOCX)
@@ -2761,6 +2806,7 @@ A **production-ready Career page** featuring modern responsive design with compr
 ### MOCK DATA
 
 **8 Job Listings** across 6 departments:
+
 - Engineering
 - Design
 - Product
@@ -2812,11 +2858,11 @@ GET /api/careers
 ### SERVICE METHODS
 
 ```javascript
-import { careersService } from '../Services/careersService';
+import { careersService } from "../Services/careersService";
 
-await careersService.getAllCareers()        // All jobs
-await careersService.getByDepartment(id)   // Filter by department
-await careersService.getStatus()            // Current data source
+await careersService.getAllCareers(); // All jobs
+await careersService.getByDepartment(id); // Filter by department
+await careersService.getStatus(); // Current data source
 ```
 
 ### FILES CREATED
@@ -2831,8 +2877,8 @@ await careersService.getStatus()            // Current data source
 
 ```jsx
 // Navigate to career page
-import { Link } from 'react-router-dom';
-<Link to="/career">Careers</Link>
+import { Link } from "react-router-dom";
+<Link to="/career">Careers</Link>;
 
 // View job listings with department filtering
 // Click "Submit Resume" to open modal
@@ -2848,7 +2894,7 @@ import { Link } from 'react-router-dom';
 ✅ **Skeleton Screens** - Professional loading states  
 ✅ **Accessibility** - WCAG AA compliant  
 ✅ **Animations** - Smooth AOS scroll effects  
-✅ **Error Handling** - User-friendly error messages  
+✅ **Error Handling** - User-friendly error messages
 
 ### STATISTICS
 
@@ -2861,14 +2907,14 @@ import { Link } from 'react-router-dom';
 
 **Career Page Status:** ✅ **Production Ready | Resume Upload | Department Filtering | Professional UI**
 
-
 ---
 
-## ��� API Integration Guide - Real Backend Connection
+## ��� API Integration Guide - Real Backend Connection
 
 ### BASE CONFIGURATION
 
 **Production API:**
+
 - Base URL: `https://asset-api.shelaigor.com/api/`
 - File Storage: `https://asset-api.shelaigor.com/api/storage/`
 - Protocol: HTTPS (SSL/TLS)
@@ -2880,8 +2926,8 @@ import { Link } from 'react-router-dom';
 
 ```javascript
 // src/Api/axiosInstance.js
-export const USE_MOCK_DATA = false;  // Change from true to false
-const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
+export const USE_MOCK_DATA = false; // Change from true to false
+const API_BASE_URL = "https://asset-api.shelaigor.com/api";
 ```
 
 **Step 2: Restart Dev Server**
@@ -2899,13 +2945,14 @@ Password: 12345678  (or your real credentials)
 
 ### AUTHENTICATION ENDPOINTS
 
-| Endpoint | Method | Purpose | Input | Response |
-|----------|--------|---------|-------|----------|
-| `/login` | POST | User authentication | email, Password | `{token, user}` |
-| `/logout` | GET | User logout | - | `{message: "success"}` |
-| `/user` | GET | Get current user | - | `{user: {...}}` |
+| Endpoint  | Method | Purpose             | Input           | Response               |
+| --------- | ------ | ------------------- | --------------- | ---------------------- |
+| `/login`  | POST   | User authentication | email, Password | `{token, user}`        |
+| `/logout` | GET    | User logout         | -               | `{message: "success"}` |
+| `/user`   | GET    | Get current user    | -               | `{user: {...}}`        |
 
 **Login Request:**
+
 ```javascript
 POST /login
 {
@@ -2915,6 +2962,7 @@ POST /login
 ```
 
 **Login Response (Success):**
+
 ```javascript
 {
   "token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
@@ -2930,6 +2978,7 @@ POST /login
 ```
 
 **Login Response (Error):**
+
 ```javascript
 {
   "message": "Invalid credentials"
@@ -2940,145 +2989,145 @@ POST /login
 
 #### 1. Component Management
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/component/list` | GET |
-| Single | `admin/component/single/{id}` | GET |
-| Create | `admin/component/create` | POST |
-| Update | `admin/component/update/{id}` | PUT |
-| Delete | `admin/component/delete/{id}` | DELETE |
+| Operation | Endpoint                      | Method |
+| --------- | ----------------------------- | ------ |
+| List      | `admin/component/list`        | GET    |
+| Single    | `admin/component/single/{id}` | GET    |
+| Create    | `admin/component/create`      | POST   |
+| Update    | `admin/component/update/{id}` | PUT    |
+| Delete    | `admin/component/delete/{id}` | DELETE |
 
 **Fields:** name (required), body (JSON, required)
 
 #### 2. Page Layout
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/page-layout/list` | GET |
-| Single | `admin/page-layout/single/{id}` | GET |
-| Create | `admin/page-layout/create` | POST |
-| Update | `admin/page-layout/update/{id}` | PUT |
-| Delete | `admin/page-layout/delete/{id}` | DELETE |
+| Operation | Endpoint                        | Method |
+| --------- | ------------------------------- | ------ |
+| List      | `admin/page-layout/list`        | GET    |
+| Single    | `admin/page-layout/single/{id}` | GET    |
+| Create    | `admin/page-layout/create`      | POST   |
+| Update    | `admin/page-layout/update/{id}` | PUT    |
+| Delete    | `admin/page-layout/delete/{id}` | DELETE |
 
 **Fields:** name (required), body (JSON, required), image (file upload)
 
 #### 3. Page
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/page/list` | GET |
-| Single | `admin/page/single/{id}` | GET |
-| Create | `admin/page/create` | POST |
-| Update | `admin/page/update/{id}` | PUT |
-| Delete | `admin/page/delete/{id}` | DELETE |
+| Operation | Endpoint                 | Method |
+| --------- | ------------------------ | ------ |
+| List      | `admin/page/list`        | GET    |
+| Single    | `admin/page/single/{id}` | GET    |
+| Create    | `admin/page/create`      | POST   |
+| Update    | `admin/page/update/{id}` | PUT    |
+| Delete    | `admin/page/delete/{id}` | DELETE |
 
 **Fields:** name (required), description (required), banner, page_layout_id, status (required)
 
 #### 4. Section Layout
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/blog/list` | GET |
-| Single | `admin/blog/single/{id}` | GET |
-| Create | `admin/blog/create` | POST |
-| Update | `admin/blog/update/{id}` | PUT |
-| Delete | `admin/blog/delete/{id}` | DELETE |
+| Operation | Endpoint                 | Method |
+| --------- | ------------------------ | ------ |
+| List      | `admin/blog/list`        | GET    |
+| Single    | `admin/blog/single/{id}` | GET    |
+| Create    | `admin/blog/create`      | POST   |
+| Update    | `admin/blog/update/{id}` | PUT    |
+| Delete    | `admin/blog/delete/{id}` | DELETE |
 
 **Fields:** name (required), body (JSON, required), image (file upload)
 
 #### 5. Section
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/section/list` | GET |
-| Single | `admin/section/single/{id}` | GET |
-| Create | `admin/section/create` | POST |
-| Update | `admin/section/update/{id}` | PUT |
-| Delete | `admin/section/delete/{id}` | DELETE |
+| Operation | Endpoint                    | Method |
+| --------- | --------------------------- | ------ |
+| List      | `admin/section/list`        | GET    |
+| Single    | `admin/section/single/{id}` | GET    |
+| Create    | `admin/section/create`      | POST   |
+| Update    | `admin/section/update/{id}` | PUT    |
+| Delete    | `admin/section/delete/{id}` | DELETE |
 
 **Fields:** name (required), section_layout_id, section_title, section_sub_title, body (JSON), page_id (required), image (required), order, status (required)
 
 #### 6. Content
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/content/list` | GET |
-| Single | `admin/content/single/{id}` | GET |
-| Create | `admin/content/create` | POST |
-| Update | `admin/content/update/{id}` | PUT |
-| Delete | `admin/content/delete/{id}` | DELETE |
+| Operation | Endpoint                    | Method |
+| --------- | --------------------------- | ------ |
+| List      | `admin/content/list`        | GET    |
+| Single    | `admin/content/single/{id}` | GET    |
+| Create    | `admin/content/create`      | POST   |
+| Update    | `admin/content/update/{id}` | PUT    |
+| Delete    | `admin/content/delete/{id}` | DELETE |
 
 **Fields:** name (required), body (JSON, required), section_id, status (required)
 
 #### 7. Category
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/category/list` | GET |
-| Single | `admin/category/single/{id}` | GET |
-| Create | `admin/category/create` | POST |
-| Update | `admin/category/update/{id}` | PUT |
-| Delete | `admin/category/delete/{id}` | DELETE |
+| Operation | Endpoint                     | Method |
+| --------- | ---------------------------- | ------ |
+| List      | `admin/category/list`        | GET    |
+| Single    | `admin/category/single/{id}` | GET    |
+| Create    | `admin/category/create`      | POST   |
+| Update    | `admin/category/update/{id}` | PUT    |
+| Delete    | `admin/category/delete/{id}` | DELETE |
 
 **Fields:** name (required), status (required)
 
 #### 8. Content Layout
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/content-layout/list` | GET |
-| Single | `admin/content-layout/single/{id}` | GET |
-| Create | `admin/content-layout/create` | POST |
-| Update | `admin/content-layout/update/{id}` | PUT |
-| Delete | `admin/content-layout/delete/{id}` | DELETE |
+| Operation | Endpoint                           | Method |
+| --------- | ---------------------------------- | ------ |
+| List      | `admin/content-layout/list`        | GET    |
+| Single    | `admin/content-layout/single/{id}` | GET    |
+| Create    | `admin/content-layout/create`      | POST   |
+| Update    | `admin/content-layout/update/{id}` | PUT    |
+| Delete    | `admin/content-layout/delete/{id}` | DELETE |
 
 **Fields:** name (required), body (JSON, required), image (file upload)
 
 #### 9. Menu
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/menu/list` | GET |
-| Single | `admin/menu/single/{id}` | GET |
-| Create | `admin/menu/create` | POST |
-| Update | `admin/menu/update/{id}` | PUT |
-| Delete | `admin/menu/delete/{id}` | DELETE |
+| Operation | Endpoint                 | Method |
+| --------- | ------------------------ | ------ |
+| List      | `admin/menu/list`        | GET    |
+| Single    | `admin/menu/single/{id}` | GET    |
+| Create    | `admin/menu/create`      | POST   |
+| Update    | `admin/menu/update/{id}` | PUT    |
+| Delete    | `admin/menu/delete/{id}` | DELETE |
 
 **Fields:** name (required), position (header/footer/sidebar), status (required)
 
 #### 10. Menu Item
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/menu-item/list` | GET |
-| Single | `admin/menu-item/single/{id}` | GET |
-| Create | `admin/menu-item/create` | POST |
-| Update | `admin/menu-item/update/{id}` | PUT |
-| Delete | `admin/menu-item/delete/{id}` | DELETE |
+| Operation | Endpoint                      | Method |
+| --------- | ----------------------------- | ------ |
+| List      | `admin/menu-item/list`        | GET    |
+| Single    | `admin/menu-item/single/{id}` | GET    |
+| Create    | `admin/menu-item/create`      | POST   |
+| Update    | `admin/menu-item/update/{id}` | PUT    |
+| Delete    | `admin/menu-item/delete/{id}` | DELETE |
 
 **Fields:** name (required), menu_id, icon, link, order, parent_id, status (required)
 
 #### 11. Product Category
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/product-category/list` | GET |
-| Single | `admin/product-category/single/{id}` | GET |
-| Create | `admin/product-category/create` | POST |
-| Update | `admin/product-category/update/{id}` | PUT |
-| Delete | `admin/product-category/delete/{id}` | DELETE |
+| Operation | Endpoint                             | Method |
+| --------- | ------------------------------------ | ------ |
+| List      | `admin/product-category/list`        | GET    |
+| Single    | `admin/product-category/single/{id}` | GET    |
+| Create    | `admin/product-category/create`      | POST   |
+| Update    | `admin/product-category/update/{id}` | PUT    |
+| Delete    | `admin/product-category/delete/{id}` | DELETE |
 
 **Fields:** name (required), status (required)
 
 #### 12. Product
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/product/list` | GET |
-| Single | `admin/product/single/{id}` | GET |
-| Create | `admin/product/create` | POST |
-| Update | `admin/product/update/{id}` | PUT |
-| Delete | `admin/product/delete/{id}` | DELETE |
+| Operation | Endpoint                    | Method |
+| --------- | --------------------------- | ------ |
+| List      | `admin/product/list`        | GET    |
+| Single    | `admin/product/single/{id}` | GET    |
+| Create    | `admin/product/create`      | POST   |
+| Update    | `admin/product/update/{id}` | PUT    |
+| Delete    | `admin/product/delete/{id}` | DELETE |
 
 **Fields:** product_category_id (required), name (required), description (JSON, required), thumbnail (file upload), status (required)
 
@@ -3086,111 +3135,111 @@ POST /login
 
 #### 13. Product Info
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/product-info/list` | GET |
-| Single | `admin/product-info/single/{id}` | GET |
-| Create | `admin/product-info/create` | POST |
-| Update | `admin/product-info/update/{id}` | PUT |
-| Delete | `admin/product-info/delete/{id}` | DELETE |
+| Operation | Endpoint                         | Method |
+| --------- | -------------------------------- | ------ |
+| List      | `admin/product-info/list`        | GET    |
+| Single    | `admin/product-info/single/{id}` | GET    |
+| Create    | `admin/product-info/create`      | POST   |
+| Update    | `admin/product-info/update/{id}` | PUT    |
+| Delete    | `admin/product-info/delete/{id}` | DELETE |
 
 **Fields:** product_id (required), info_details (required), icon, info_type (primary/secondary/tertiary, required)
 
 #### 14. Gallery
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/gallery/list` | GET |
-| Single | `admin/gallery/single/{id}` | GET |
-| Create | `admin/gallery/create` | POST |
-| Update | `admin/gallery/update/{id}` | PUT |
-| Delete | `admin/gallery/delete/{id}` | DELETE |
+| Operation | Endpoint                    | Method |
+| --------- | --------------------------- | ------ |
+| List      | `admin/gallery/list`        | GET    |
+| Single    | `admin/gallery/single/{id}` | GET    |
+| Create    | `admin/gallery/create`      | POST   |
+| Update    | `admin/gallery/update/{id}` | PUT    |
+| Delete    | `admin/gallery/delete/{id}` | DELETE |
 
 **Fields:** product_id (required), gallery_id (grouping ID), title, path (required, file upload), file_type (video/image, required)
 
 #### 15. Banner/Carousel
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/banner/list` | GET |
-| Single | `admin/banner/single/{id}` | GET |
-| Create | `admin/banner/create` | POST |
-| Update | `admin/banner/update/{id}` | PUT |
-| Delete | `admin/banner/delete/{id}` | DELETE |
+| Operation | Endpoint                   | Method |
+| --------- | -------------------------- | ------ |
+| List      | `admin/banner/list`        | GET    |
+| Single    | `admin/banner/single/{id}` | GET    |
+| Create    | `admin/banner/create`      | POST   |
+| Update    | `admin/banner/update/{id}` | PUT    |
+| Delete    | `admin/banner/delete/{id}` | DELETE |
 
 **Fields:** banner_id (required, min 3 chars), status (required)
 
 #### 16. Banner Content
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/banner-content/list` | GET |
-| Single | `admin/banner-content/single/{id}` | GET |
-| Create | `admin/banner-content/create` | POST |
-| Update | `admin/banner-content/update/{id}` | PUT |
-| Delete | `admin/banner-content/delete/{id}` | DELETE |
+| Operation | Endpoint                           | Method |
+| --------- | ---------------------------------- | ------ |
+| List      | `admin/banner-content/list`        | GET    |
+| Single    | `admin/banner-content/single/{id}` | GET    |
+| Create    | `admin/banner-content/create`      | POST   |
+| Update    | `admin/banner-content/update/{id}` | PUT    |
+| Delete    | `admin/banner-content/delete/{id}` | DELETE |
 
 **Fields:** banner_id (required), file (required, file upload), short_description, headline, link, order, status (required)
 
 #### 17. Social Links
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/social/list` | GET |
-| Single | `admin/social/single/{id}` | GET |
-| Create | `admin/social/create` | POST |
-| Update | `admin/social/update/{id}` | PUT |
-| Delete | `admin/social/delete/{id}` | DELETE |
+| Operation | Endpoint                   | Method |
+| --------- | -------------------------- | ------ |
+| List      | `admin/social/list`        | GET    |
+| Single    | `admin/social/single/{id}` | GET    |
+| Create    | `admin/social/create`      | POST   |
+| Update    | `admin/social/update/{id}` | PUT    |
+| Delete    | `admin/social/delete/{id}` | DELETE |
 
 **Fields:** name (required), icon (required), link, base_link, status (required)
 
 #### 18. Career/Jobs
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/career/list` | GET |
-| Single | `admin/career/single/{id}` | GET |
-| Create | `admin/career/create` | POST |
-| Update | `admin/career/update/{id}` | PUT |
-| Delete | `admin/career/delete/{id}` | DELETE |
+| Operation | Endpoint                   | Method |
+| --------- | -------------------------- | ------ |
+| List      | `admin/career/list`        | GET    |
+| Single    | `admin/career/single/{id}` | GET    |
+| Create    | `admin/career/create`      | POST   |
+| Update    | `admin/career/update/{id}` | PUT    |
+| Delete    | `admin/career/delete/{id}` | DELETE |
 
 **Fields:** title (required), location, job_type (part_time/full_time), date_start, date_end (required), job_description (JSON), job_requirements (JSON), benefits (JSON), employment_status (permanent/contractual, required)
 
 #### 19. Job Application
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| List | `admin/job-application/list` | GET |
-| Single | `admin/job-application/single/{id}` | GET |
-| Create | `admin/job-application/create` | POST |
-| Update | `admin/job-application/update/{id}` | PUT |
-| Delete | `admin/job-application/delete/{id}` | DELETE |
+| Operation | Endpoint                            | Method |
+| --------- | ----------------------------------- | ------ |
+| List      | `admin/job-application/list`        | GET    |
+| Single    | `admin/job-application/single/{id}` | GET    |
+| Create    | `admin/job-application/create`      | POST   |
+| Update    | `admin/job-application/update/{id}` | PUT    |
+| Delete    | `admin/job-application/delete/{id}` | DELETE |
 
 **Fields:** career_id (required), first_name (required), last_name (required), email (required), phone (required), experience, prev_org, last_degree, last_ed_inst (required), resume (file upload, required), additional_file (file upload), cover_letter, status (applied/selected/dropped, required)
 
 #### 20. Settings
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| Get | `admin/settings` | GET |
-| Update | `admin/settings/update` | POST |
+| Operation | Endpoint                | Method |
+| --------- | ----------------------- | ------ |
+| Get       | `admin/settings`        | GET    |
+| Update    | `admin/settings/update` | POST   |
 
 **Fields:** company_name (required), logo, company_phone, company_email, company_address (JSON)
 
 #### 21. User Profile
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| Get | `admin/user` or `admin/settings` | GET |
-| Update | `admin/user/update` | POST |
+| Operation | Endpoint                         | Method |
+| --------- | -------------------------------- | ------ |
+| Get       | `admin/user` or `admin/settings` | GET    |
+| Update    | `admin/user/update`              | POST   |
 
 **Fields:** name (required), email, phone
 
 #### 22. Change Password
 
-| Operation | Endpoint | Method |
-|-----------|----------|--------|
-| Change | `admin/user/change-password` | POST |
+| Operation | Endpoint                     | Method |
+| --------- | ---------------------------- | ------ |
+| Change    | `admin/user/change-password` | POST   |
 
 **Fields:** old_password (required), new_password (required), password_confirmation (required)
 
@@ -3249,30 +3298,30 @@ The following modules support file uploads (multipart/form-data):
 ```javascript
 // Create FormData for file upload
 const formData = new FormData();
-formData.append('name', data.name);
-formData.append('image', fileInput.files[0]); // File object
-formData.append('status', 'active');
+formData.append("name", data.name);
+formData.append("image", fileInput.files[0]); // File object
+formData.append("status", "active");
 
 // POST with FormData
-await axiosInstance.post('/admin/module/create', formData, {
+await axiosInstance.post("/admin/module/create", formData, {
   headers: {
-    'Content-Type': 'multipart/form-data'
-  }
+    "Content-Type": "multipart/form-data",
+  },
 });
 ```
 
 ### ERROR HANDLING
 
-| Status | Meaning | Action |
-|--------|---------|--------|
-| 200 | Success | Proceed normally |
-| 201 | Created | Proceed normally |
-| 400 | Bad Request | Check input validation |
-| 401 | Unauthorized | Redirect to login |
-| 403 | Forbidden | Show permission denied |
-| 404 | Not Found | Show not found error |
-| 422 | Validation Error | Show field errors |
-| 500 | Server Error | Show server error |
+| Status | Meaning          | Action                 |
+| ------ | ---------------- | ---------------------- |
+| 200    | Success          | Proceed normally       |
+| 201    | Created          | Proceed normally       |
+| 400    | Bad Request      | Check input validation |
+| 401    | Unauthorized     | Redirect to login      |
+| 403    | Forbidden        | Show permission denied |
+| 404    | Not Found        | Show not found error   |
+| 422    | Validation Error | Show field errors      |
+| 500    | Server Error     | Show server error      |
 
 **Error Response Format:**
 
@@ -3303,14 +3352,16 @@ await axiosInstance.post('/admin/module/create', formData, {
 **Before deploying to production:**
 
 1. **Disable Mock Data:**
+
    ```javascript
    // src/Api/axiosInstance.js
    export const USE_MOCK_DATA = false;
    ```
 
 2. **Set Correct API URL:**
+
    ```javascript
-   const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
+   const API_BASE_URL = "https://asset-api.shelaigor.com/api";
    ```
 
 3. **Enable HTTPS:**
@@ -3318,6 +3369,7 @@ await axiosInstance.post('/admin/module/create', formData, {
    - Configure CORS on backend
 
 4. **Environment Variables:**
+
    ```env
    VITE_API_BASE_URL=https://asset-api.shelaigor.com/api
    VITE_USE_MOCK_DATA=false
@@ -3332,28 +3384,33 @@ await axiosInstance.post('/admin/module/create', formData, {
 ### COMMON ISSUES & SOLUTIONS
 
 **CORS Error:**
+
 - Ensure backend has proper CORS headers
 - Configure `withCredentials: true` in axiosInstance
 - Whitelist frontend domain on backend
 
 **401 Unauthorized:**
+
 - Check JWT token is valid
 - Verify token is being sent in Authorization header
 - Token may be expired, implement token refresh
 
 **File Upload Fails:**
+
 - Ensure `Content-Type: multipart/form-data` is set
 - Check file size limits on backend
 - Verify file upload directory permissions
 - Check supported file types
 
 **Data Not Displaying:**
+
 - Check API response format matches expected structure
 - Verify data is returned in correct format
 - Check Redux state is updated correctly
 - Test API in Postman or browser DevTools
 
 **API Base URL Not Found:**
+
 - Check `API_BASE_URL` is correctly set in axiosInstance.js
 - Verify backend server is running
 - Check network connectivity
@@ -3361,15 +3418,14 @@ await axiosInstance.post('/admin/module/create', formData, {
 
 ### INTEGRATION SUMMARY
 
-| Component | Status | Notes |
-|-----------|--------|-------|
-| Authentication | ✅ Ready | JWT-based, token in localStorage |
-| CRUD Operations | ✅ Ready | All 22+ modules supported |
-| File Uploads | ✅ Ready | Multipart/form-data support |
-| Error Handling | ✅ Ready | Proper error messages |
-| API Documentation | ✅ Ready | Complete endpoint list |
-| Mock Data | ✅ Ready | For development/testing |
-| Real API | ✅ Ready | Switch via USE_MOCK_DATA flag |
+| Component         | Status   | Notes                            |
+| ----------------- | -------- | -------------------------------- |
+| Authentication    | ✅ Ready | JWT-based, token in localStorage |
+| CRUD Operations   | ✅ Ready | All 22+ modules supported        |
+| File Uploads      | ✅ Ready | Multipart/form-data support      |
+| Error Handling    | ✅ Ready | Proper error messages            |
+| API Documentation | ✅ Ready | Complete endpoint list           |
+| Mock Data         | ✅ Ready | For development/testing          |
+| Real API          | ✅ Ready | Switch via USE_MOCK_DATA flag    |
 
 **Status:** ✅ **Complete API Integration Ready for Production**
-
