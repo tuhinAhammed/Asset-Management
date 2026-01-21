@@ -109,12 +109,14 @@ GET    /system                        // Get system info
 
 #### 🎨 Professional UI
 
-- **Material Design Icons** - react-icons library with 1000+ professional icons
-- **Tailwind CSS** - Utility-first CSS with responsive design
+- **Feather & Material Icons** - react-icons library with 1000+ professional icons
+- **Tailwind CSS** - Utility-first CSS with fully responsive design
 - **Gradient Backgrounds** - Modern gradients for visual appeal
 - **Dark Theme** - Professional dark theme with proper contrast ratios
-- **Mobile Responsive** - Works seamlessly on all device sizes
-- **Accessibility** - WCAG 2.1 AA compliant
+- **Mobile First Design** - Optimized for mobile, tablet, and desktop
+- **Accessibility** - WCAG 2.1 AA compliant with ARIA labels
+- **Smooth Animations** - AOS scroll animations and micro-interactions
+- **Hover Effects** - Enhanced UX with professional transitions
 
 #### 📂 File Upload Support
 
@@ -156,6 +158,43 @@ The following modules support secure image/file uploads with multipart/form-data
 - **Form Validation** - Client-side validation before submission
 - **Image Previews** - Visual feedback for file uploads
 - **Auto-reset Forms** - Forms clear after successful submission
+- **Scroll Animations** - AOS animations for modern page transitions
+- **Icon Integration** - Feather icons for consistent visual language
+
+#### 💼 Career Page ⭐ NEW
+
+**Professional Careers/Jobs Listing Page** with:
+
+- **Department Filtering** - Filter jobs by 6 departments (Desktop: buttons, Mobile: dropdown)
+- **Job Cards** - Responsive job listings with metadata (location, experience, employment type, deadline)
+- **Urgency Indicators** - Visual badges for urgent positions (< 7 days) and closed positions
+- **Deadline Tracking** - Countdown displays showing days remaining to apply
+- **Feather Icons** - Professional icons for job metadata (location, briefcase, calendar, clock)
+- **Full Responsiveness** - Mobile (1 column dropdown), Tablet (2 columns), Desktop (sidebar + 2 columns)
+- **Real API Integration** - Supports both mock data and real API with environment variables
+- **Mock Data** - 8 sample job listings across 6 departments for development
+- **Smooth Animations** - AOS scroll animations with staggered delays
+- **Resume Submission Modal** - Professional modal for submitting resumes with file upload
+
+**Route:** `/career`  
+**Files:**
+
+- `src/Pages/Career.jsx` - Main career page (302 lines)
+- `src/Components/Careers/JobCard.jsx` - Individual job card component (125 lines)
+- `src/Components/Careers/DepartmentFilter.jsx` - Department filter component (181 lines)
+- `src/Components/Careers/ResumeModal.jsx` - Resume submission modal (244 lines) ⭐ NEW
+- `src/Data/mockCareersData.js` - Mock job data and utilities (241 lines)
+
+**Resume Submission Features:**
+- ✅ Full Name, Email, Phone, Cover Letter form fields
+- ✅ Resume file upload (PDF, DOC, DOCX - max 5MB)
+- ✅ File type and size validation
+- ✅ Drag & drop file upload support
+- ✅ Email validation and form validation
+- ✅ Loading states and toast notifications
+- ✅ API integration with fallback
+- ✅ Auto-close after successful submission
+- ✅ Mobile-responsive modal design
 
 ---
 
@@ -444,7 +483,7 @@ Or any other email/password combination - the mock API doesn't validate.
 5. ✅ Go to Banners - view 6 promotional banners
 6. ✅ Go to Services - view 8 service offerings
 7. ✅ Go to Testimonials - view 6 customer reviews
-8. ✅ Go to Careers - view 6 job listings
+8. ✅ Go to Careers - view 6 job listings with department filtering
 9. ✅ Create a new product - added to in-memory list
 10. ✅ Edit/Delete items - changes persist in session
 11. ✅ Refresh page - data resets to original mock data
@@ -543,7 +582,25 @@ src/
 │   │   ├── Products.jsx
 │   │   ├── Gallery.jsx
 │   │   └── ... (more pages)
+│   ├── Career.jsx                # ⭐ Professional career page with filtering
 │   └── ... (public pages)
+│
+├── Components/
+│   ├── Careers/                  # ⭐ Career page components
+│   │   ├── JobCard.jsx          # Individual job listing card
+│   │   ├── DepartmentFilter.jsx # Department filter (responsive)
+│   │   └── ResumeModal.jsx      # Resume submission modal ⭐ NEW
+│   ├── Admin/                     # Admin-specific components
+│   │   ├── DataTable.jsx         # Reusable CRUD table
+│   │   ├── Modal.jsx             # Modal dialog component
+│   │   └── ...
+│   ├── MainLayout/
+│   │   ├── Header.jsx            # Top navigation (with Career link)
+│   │   └── Footer.jsx            # Footer
+│   └── ...
+│
+├── Data/
+│   └── mockCareersData.js        # ⭐ Mock job listings and utilities
 │
 ├── Redux/
 │   ├── Slice/                     # 21 Redux slices for state management
@@ -1571,12 +1628,14 @@ A: Yes! Public APIs are available in endpoints.js (banner, products, pages, etc.
 ### React Console Warnings Fixed ✅
 
 #### 1. **Invalid DOM Property - `class` to `className`**
+
 - **File:** `src/Components/Home/Strategy.jsx` (Line 93)
 - **Issue:** Used HTML `class` attribute instead of React's `className`
 - **Fix:** Replaced `class=` with `className=`
 - **Impact:** Eliminated React invalid DOM property warning
 
 #### 2. **Missing Key Props in List Rendering**
+
 - **File:** `src/Components/MainLayout/Footer.jsx`
 - **Issue:** Three `.map()` functions rendering lists without unique `key` props
 - **Fixed Components:**
@@ -1587,12 +1646,14 @@ A: Yes! Public APIs are available in endpoints.js (banner, products, pages, etc.
 - **Impact:** Removed React list warning and improved rendering performance
 
 #### 3. **Export Name Mismatch**
+
 - **File:** `src/Components/MainLayout/Footer.jsx` (Line 32)
 - **Issue:** Import statement referenced `toast_position` which doesn't exist in `src/Api/Api.jsx`
 - **Fix:** Changed import and all usages from `toast_position` → `toastr_position` (correct export name)
 - **Impact:** Fixed SyntaxError and resolved module export issue
 
 #### 4. **Footer Social Icons - React Icons Integration**
+
 - **File:** `src/Components/MainLayout/Footer.jsx`
 - **Issue:** Social icons were stored as strings in data and not rendering as actual components
 - **Improvements:**
@@ -1605,7 +1666,9 @@ A: Yes! Public APIs are available in endpoints.js (banner, products, pages, etc.
 - **Impact:** Social icons now display correctly with beautiful animations and better accessibility
 
 ### API Error Handling
+
 The following 404 errors are expected during development (non-critical):
+
 - `asset-api.shelaigor.com/api/testimonials`
 - `asset-api.shelaigor.com/api/services`
 - `asset-api.shelaigor.com/api/faqs`

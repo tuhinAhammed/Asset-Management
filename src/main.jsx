@@ -21,6 +21,7 @@ import SingleService from "./Pages/SingleService.jsx";
 import OurStory from "./Pages/OurStory.jsx";
 import WhyUs from "./Pages/WhyUs.jsx";
 import OurBusiness from "./Pages/OurBusiness.jsx";
+import Career from "./Pages/Career.jsx";
 
 // Admin Pages
 import AdminLayout from './Components/Admin/AdminLayout.jsx';
@@ -62,6 +63,7 @@ ReactDOM.createRoot(root).render(
         <Route path="about-us" element={<About />} />
         <Route path="why-us" element={<WhyUs />} />
         <Route path="our-business" element={<OurBusiness />} />
+        <Route path="career" element={<Career />} />
         <Route path="our-story" element={<OurStory />} />
         <Route path="*" element={<Error />} />
       </Route>
