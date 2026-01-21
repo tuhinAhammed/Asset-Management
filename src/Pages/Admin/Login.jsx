@@ -37,9 +37,18 @@ const Login = () => {
       return;
     }
     try {
-      await dispatch(login(formData)).unwrap();
-      toast.success('Login successful');
-      navigate('/admin/dashboard');
+      const result = await dispatch(login(formData)).unwrap();
+      
+      // Verify we got a token back from the API
+      if (result?.token) {
+        toast.success('Login successful');
+        // Navigate immediately - Redux state will update and ProtectedRoute will allow access
+        setTimeout(() => {
+          navigate('/admin/dashboard', { replace: true });
+        }, 200);
+      } else {
+        toast.error('Invalid login response');
+      }
     } catch (err) {
       toast.error(error || 'Login failed');
     }
