@@ -261,7 +261,7 @@ export const productCategoryAPI = {
   create: (data) =>
     axiosInstance.post('/admin/product-category/create', data),
   update: (id, data) =>
-    axiosInstance.put(`/admin/product-category/update/${id}`, data),
+    axiosInstance.post(`/admin/product-category/update/${id}`, data),
   delete: (id) =>
     axiosInstance.delete(`/admin/product-category/delete/${id}`),
 };

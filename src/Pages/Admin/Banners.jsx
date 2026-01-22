@@ -106,7 +106,9 @@ const Banners = () => {
       setShowModal(false);
       resetForm();
     } catch (err) {
-      toast.error(err.message || 'Operation failed');
+      console.error('Banner error:', err);
+      const errorMsg = err?.response?.data?.message || err?.message || 'Operation failed';
+      toast.error(errorMsg);
     }
   };
 

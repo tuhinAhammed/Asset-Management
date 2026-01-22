@@ -7,12 +7,41 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
  * @returns {object} - Redux slice
  */
 export const createCRUDSlice = (name, api) => {
+  // Helper to extract array data from response
+  const extractListData = (response) => {
+    const data = response.data.data || response.data.list || response.data;
+    // If it's an array, return it; otherwise check if it has a list/data property
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.list)) return data.list;
+    if (data && Array.isArray(data.data)) return data.data;
+    return Array.isArray(data) ? data : [];
+  };
+
   const fetchList = createAsyncThunk(
     `${name}/fetchList`,
     async (params = {}, { rejectWithValue }) => {
       try {
         const response = await api.list(params);
-        return response.data.data || response.data.list || response.data;
+        let data = extractListData(response);
+        
+        // Validate array items - filter out items with invalid status codes as field values
+        if (Array.isArray(data)) {
+          data = data.filter(item => {
+            // Filter out items where status is a number or HTTP error code string
+            if (typeof item.status === 'number') {
+              console.warn(`Filtered out malformed item with numeric status:`, item);
+              return false;
+            }
+            // Also filter string status values that look like HTTP error codes (400, 404, 500, etc)
+            if (typeof item.status === 'string' && /^\d{3}$/.test(item.status)) {
+              console.warn(`Filtered out malformed item with HTTP status code:`, item);
+              return false;
+            }
+            return true;
+          });
+        }
+        
+        return data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || `Failed to fetch ${name} list`);
       }

@@ -29,9 +29,6 @@ const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   withCredentials: false, // Disabled due to CORS policy - using JWT token instead
 });
 
@@ -42,6 +39,12 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Only set Content-Type for JSON if not FormData
+    if (!(config.data instanceof FormData)) {
+      config.headers['Content-Type'] = 'application/json';
+    }
+    
     return config;
   },
   (error) => {

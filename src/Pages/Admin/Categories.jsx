@@ -25,6 +25,8 @@ const Categories = () => {
   const [formData, setFormData] = useState({
     name: '',
     status: 'active',
+    category_id: '',
+    description: '',
   });
   const [editingId, setEditingId] = useState(null);
 
@@ -66,7 +68,9 @@ const Categories = () => {
       setShowModal(false);
       resetForm();
     } catch (err) {
-      toast.error(err.message || 'Operation failed');
+      console.error('Category error:', err);
+      const errorMsg = err?.response?.data?.message || err?.message || 'Operation failed';
+      toast.error(errorMsg);
     }
   };
 
@@ -74,6 +78,8 @@ const Categories = () => {
     setFormData({
       name: '',
       status: 'active',
+      category_id: '',
+      description: '',
     });
     setIsEditing(false);
     setEditingId(null);
@@ -85,6 +91,8 @@ const Categories = () => {
       setFormData({
         name: category.name,
         status: category.status,
+        category_id: category.category_id || '',
+        description: category.description || '',
       });
       setEditingId(id);
       setIsEditing(true);
@@ -164,6 +172,29 @@ const Categories = () => {
               placeholder="Enter category name"
               value={formData.name}
               onChange={handleInputChange}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-primary mb-2">Category ID (optional)</label>
+            <PrimaryInput
+              type="text"
+              name="category_id"
+              placeholder="Enter category ID"
+              value={formData.category_id}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-primary mb-2">Description (optional)</label>
+            <textarea
+              name="description"
+              placeholder="Enter category description"
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              rows="3"
+              className="w-full px-4 py-2 border border-borderColor rounded-lg focus:outline-none focus:border-theme"
             />
           </div>
 
