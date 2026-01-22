@@ -195,15 +195,15 @@ export const contentAPI = {
 // ============ CATEGORY ENDPOINTS ============
 export const categoryAPI = {
   list: () =>
-    axiosInstance.get('/admin/category/list'),
+    axiosInstance.get('/admin/product-category/list'),
   single: (id) =>
-    axiosInstance.get(`/admin/category/single/${id}`),
+    axiosInstance.get(`/admin/product-category/single/${id}`),
   create: (data) =>
-    axiosInstance.post('/admin/category/create', data),
+    axiosInstance.post('/admin/product-category/create', data),
   update: (id, data) =>
-    axiosInstance.put(`/admin/category/update/${id}`, data),
+    axiosInstance.put(`/admin/product-category/update/${id}`, data),
   delete: (id) =>
-    axiosInstance.delete(`/admin/category/delete/${id}`),
+    axiosInstance.delete(`/admin/product-category/delete/${id}`),
 };
 
 // ============ CONTENT LAYOUT ENDPOINTS ============

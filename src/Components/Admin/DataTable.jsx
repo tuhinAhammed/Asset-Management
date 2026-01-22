@@ -70,7 +70,7 @@ const DataTable = ({
               </tr>
             ) : (
               filteredData.map((row, idx) => (
-                <tr key={row.id || idx} className="border-b border-theme border-opacity-10 hover:bg-quaternary transition">
+                <tr key={`${row.id}-${idx}`} className="border-b border-theme border-opacity-10 hover:bg-quaternary transition">
                   {columns.map((col) => (
                     <td key={col.key} className="px-6 py-4 text-sm text-primary font-primary">
                       {col.render ? col.render(row[col.key], row) : row[col.key]}

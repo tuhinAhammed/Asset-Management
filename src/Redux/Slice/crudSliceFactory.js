@@ -12,7 +12,7 @@ export const createCRUDSlice = (name, api) => {
     async (params = {}, { rejectWithValue }) => {
       try {
         const response = await api.list(params);
-        return response.data.data || response.data;
+        return response.data.data || response.data.list || response.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || `Failed to fetch ${name} list`);
       }
@@ -24,7 +24,7 @@ export const createCRUDSlice = (name, api) => {
     async (id, { rejectWithValue }) => {
       try {
         const response = await api.single(id);
-        return response.data.data || response.data;
+        return response.data.data || response.data.list || response.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || `Failed to fetch ${name}`);
       }
@@ -36,7 +36,7 @@ export const createCRUDSlice = (name, api) => {
     async (data, { rejectWithValue }) => {
       try {
         const response = await api.create(data);
-        return response.data.data || response.data;
+        return response.data.data || response.data.list || response.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || `Failed to create ${name}`);
       }
@@ -48,7 +48,7 @@ export const createCRUDSlice = (name, api) => {
     async ({ id, data }, { rejectWithValue }) => {
       try {
         const response = await api.update(id, data);
-        return response.data.data || response.data;
+        return response.data.data || response.data.list || response.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || `Failed to update ${name}`);
       }
