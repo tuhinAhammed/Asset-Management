@@ -9,12 +9,21 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const createCRUDSlice = (name, api) => {
   // Helper to extract array data from response
   const extractListData = (response) => {
-    const data = response.data.data || response.data.list || response.data;
-    // If it's an array, return it; otherwise check if it has a list/data property
+    let data = response.data.data || response.data.list || response.data;
+    
+    // Handle nested structures
+    if (data && typeof data === 'object' && !Array.isArray(data)) {
+      if (Array.isArray(data.list)) {
+        data = data.list;
+      } else if (Array.isArray(data.data)) {
+        data = data.data;
+      }
+    }
+    
+    // If it's an array, return it
     if (Array.isArray(data)) return data;
-    if (data && Array.isArray(data.list)) return data.list;
-    if (data && Array.isArray(data.data)) return data.data;
-    return Array.isArray(data) ? data : [];
+    
+    return [];
   };
 
   const fetchList = createAsyncThunk(
@@ -22,28 +31,56 @@ export const createCRUDSlice = (name, api) => {
     async (params = {}, { rejectWithValue }) => {
       try {
         const response = await api.list(params);
+        
+        // Handle error responses
+        if (response.status !== 200 && response.status !== 201) {
+          return rejectWithValue(response.data?.message || `Failed to fetch ${name} list`);
+        }
+        
         let data = extractListData(response);
         
         // Validate array items - filter out items with invalid status codes as field values
         if (Array.isArray(data)) {
           data = data.filter(item => {
-            // Filter out items where status is a number or HTTP error code string
+            // Must have an id
+            if (!item || typeof item !== 'object' || !item.id) {
+              console.warn(`Filtered out item without id:`, item);
+              return false;
+            }
+            
+            // Filter out items where status is a number
             if (typeof item.status === 'number') {
               console.warn(`Filtered out malformed item with numeric status:`, item);
               return false;
             }
-            // Also filter string status values that look like HTTP error codes (400, 404, 500, etc)
-            if (typeof item.status === 'string' && /^\d{3}$/.test(item.status)) {
-              console.warn(`Filtered out malformed item with HTTP status code:`, item);
-              return false;
+            
+            // Filter string status values that look like HTTP error codes
+            if (typeof item.status === 'string') {
+              const trimmedStatus = item.status.trim();
+              // Check if it's a 3-digit HTTP error code
+              if (/^\d{3}$/.test(trimmedStatus)) {
+                console.warn(`Filtered out item with HTTP error code status:`, item);
+                return false;
+              }
+              // Check common valid status values
+              if (!['active', 'inactive', 'draft', 'published', 'pending', 'approved', 'rejected'].includes(trimmedStatus.toLowerCase())) {
+                // If status doesn't match any known status, filter it out
+                if (trimmedStatus !== '' && trimmedStatus.toLowerCase() !== 'true' && trimmedStatus.toLowerCase() !== 'false') {
+                  console.warn(`Filtered out item with invalid status:`, item);
+                  return false;
+                }
+              }
             }
+            
             return true;
           });
         }
         
         return data;
       } catch (error) {
-        return rejectWithValue(error.response?.data?.message || `Failed to fetch ${name} list`);
+        console.error(`Error fetching ${name}:`, error);
+        const message = error?.message || error?.data?.message || `Failed to fetch ${name} list`;
+        return rejectWithValue(message);
       }
     }
   );
@@ -53,9 +90,14 @@ export const createCRUDSlice = (name, api) => {
     async (id, { rejectWithValue }) => {
       try {
         const response = await api.single(id);
+        if (response.status !== 200 && response.status !== 201) {
+          return rejectWithValue(response.data?.message || `Failed to fetch ${name}`);
+        }
         return response.data.data || response.data.list || response.data;
       } catch (error) {
-        return rejectWithValue(error.response?.data?.message || `Failed to fetch ${name}`);
+        console.error(`Error fetching single ${name}:`, error);
+        const message = error?.message || error?.data?.message || `Failed to fetch ${name}`;
+        return rejectWithValue(message);
       }
     }
   );
@@ -65,9 +107,14 @@ export const createCRUDSlice = (name, api) => {
     async (data, { rejectWithValue }) => {
       try {
         const response = await api.create(data);
+        if (response.status !== 200 && response.status !== 201) {
+          return rejectWithValue(response.data?.message || `Failed to create ${name}`);
+        }
         return response.data.data || response.data.list || response.data;
       } catch (error) {
-        return rejectWithValue(error.response?.data?.message || `Failed to create ${name}`);
+        console.error(`Error creating ${name}:`, error);
+        const message = error?.message || error?.data?.message || `Failed to create ${name}`;
+        return rejectWithValue(message);
       }
     }
   );
@@ -77,9 +124,14 @@ export const createCRUDSlice = (name, api) => {
     async ({ id, data }, { rejectWithValue }) => {
       try {
         const response = await api.update(id, data);
+        if (response.status !== 200 && response.status !== 201) {
+          return rejectWithValue(response.data?.message || `Failed to update ${name}`);
+        }
         return response.data.data || response.data.list || response.data;
       } catch (error) {
-        return rejectWithValue(error.response?.data?.message || `Failed to update ${name}`);
+        console.error(`Error updating ${name}:`, error);
+        const message = error?.message || error?.data?.message || `Failed to update ${name}`;
+        return rejectWithValue(message);
       }
     }
   );
@@ -88,10 +140,15 @@ export const createCRUDSlice = (name, api) => {
     `${name}/delete`,
     async (id, { rejectWithValue }) => {
       try {
-        await api.delete(id);
+        const response = await api.delete(id);
+        if (response.status !== 200 && response.status !== 201) {
+          return rejectWithValue(response.data?.message || `Failed to delete ${name}`);
+        }
         return id;
       } catch (error) {
-        return rejectWithValue(error.response?.data?.message || `Failed to delete ${name}`);
+        console.error(`Error deleting ${name}:`, error);
+        const message = error?.message || error?.data?.message || `Failed to delete ${name}`;
+        return rejectWithValue(message);
       }
     }
   );

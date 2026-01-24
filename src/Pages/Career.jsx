@@ -7,7 +7,7 @@ import JobCard from "../Components/Careers/JobCard";
 import DepartmentFilter from "../Components/Careers/DepartmentFilter";
 import ResumeModal from "../Components/Careers/ResumeModal";
 import { mockJobListings, departmentsList, getDaysUntilDeadline } from "../Data/mockCareersData";
-import axios from "axios";
+import axiosInstance from "../Api/axiosInstance";
 import { toast } from "react-toastify";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -33,48 +33,54 @@ const Career = () => {
 
   /**
    * Initialize page data and animations
-   * Attempts to fetch from API, falls back to mock data if unavailable
+   * Fetches from real API with mock data fallback
    */
   useEffect(() => {
     const initializeCareerPage = async () => {
       try {
         setLoading(true);
         
-        // Check if we should use mock data or real API
-        const USE_MOCK_DATA = import.meta.env.VITE_USE_MOCK_CAREERS !== 'false';
+        // Fetch from real API
+        const response = await axiosInstance.get('/admin/career/list');
         
-        if (USE_MOCK_DATA) {
-          // Use mock data (development/demo mode)
-          console.log("Using mock career data for development");
-          setTimeout(() => {
-            setJobsData(mockJobListings);
-            setLoading(false);
-          }, 300);
-        } else {
-          // Fetch from real API
-          const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://asset-api.shelaigor.com/api";
-          const response = await axios.get(`${API_BASE_URL}/careers`);
-          
-          if (response.data && response.data.list) {
-            setJobsData(response.data.list);
-          } else if (response.data && Array.isArray(response.data)) {
-            setJobsData(response.data);
-          } else {
-            throw new Error("Invalid API response format");
-          }
-          setLoading(false);
+        // Extract careers data - API returns {list: [...]} structure
+        let careers = [];
+        if (response.data && Array.isArray(response.data.list)) {
+          careers = response.data.list;
+        } else if (response.data && Array.isArray(response.data.data)) {
+          careers = response.data.data;
+        } else if (response.data && Array.isArray(response.data)) {
+          careers = response.data;
+        } else if (Array.isArray(response)) {
+          careers = response;
         }
+        
+        if (!careers || careers.length === 0) {
+          setJobsData(mockJobListings);
+          setLoading(false);
+          return;
+        }
+        
+        // Transform API data to match JobCard component expectations
+        const transformedCareers = careers.map(career => ({
+          id: career.id,
+          title: career.title,
+          department: career.location || 'General',
+          location: career.location,
+          jobType: career.job_type || 'full_time',
+          description: career.job_description?.content || career.job_description || '',
+          requirements: career.job_requirements?.content || career.job_requirements || '',
+          benefits: career.benefits?.content || career.benefits || '',
+          deadline: career.date_end,
+          urgency: career.employment_status === 'urgent' ? 'high' : 'normal',
+        }));
+        
+        setJobsData(transformedCareers);
+        setLoading(false);
       } catch (error) {
         console.error("Error loading career data from API:", error);
-        console.log("Falling back to mock data...");
-        
-        // Fallback to mock data if API fails
         setJobsData(mockJobListings);
         setLoading(false);
-        
-        if (!import.meta.env.VITE_USE_MOCK_CAREERS || import.meta.env.VITE_USE_MOCK_CAREERS === 'false') {
-          toast.warning("Failed to load careers from API. Showing demo data.");
-        }
       }
     };
 

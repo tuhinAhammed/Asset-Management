@@ -247,6 +247,12 @@ export const mockAPIService = {
     return mockResponse({ data: mockData.mockBanners });
   },
 
+  getBannerById: async (id) => {
+    await delay(DELAY);
+    const banner = mockData.mockBanners.find(b => b.id === parseInt(id));
+    return mockResponse(banner || {}, banner ? 200 : 404);
+  },
+
   createBanner: async (data) => {
     await delay(DELAY);
     const newBanner = { 

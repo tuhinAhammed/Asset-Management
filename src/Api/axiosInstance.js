@@ -20,7 +20,7 @@ import mockAPIService from './mockAPIService';
  */
 
 // ===== IMPORTANT: Toggle between mock and real API =====
-export const USE_MOCK_DATA = false;  // Set to true to use mock data
+export const USE_MOCK_DATA = false;  // Set to true to use mock data (Currently using REAL API)
 
 const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
 // Alternative: const API_BASE_URL = 'http://localhost:8000/api'; // For local backend
@@ -29,7 +29,11 @@ const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
-  withCredentials: false, // Disabled due to CORS policy - using JWT token instead
+  withCredentials: false, // Disabled - backend uses wildcard CORS with JWT tokens in headers
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }
 });
 
 // Add request interceptor to inject auth token
@@ -281,12 +285,53 @@ axiosInstance.interceptors.response.use(
       return Promise.resolve(error.config.mockResponse);
     }
 
-    if (error.response?.status === 401) {
+    // Handle network errors
+    if (!error.response) {
+      console.error('Network Error:', error.message);
+      return Promise.reject({
+        status: 0,
+        message: error.message || 'Network error. Please check your connection.',
+        error
+      });
+    }
+
+    const status = error.response?.status;
+    
+    if (status === 401) {
       // Unauthorized - clear token and redirect to login
       localStorage.removeItem('authToken');
       localStorage.removeItem('user');
       window.location.href = '/admin/login';
+      return Promise.reject(error);
     }
+    
+    if (status === 403) {
+      console.error('Access Forbidden:', error.response?.data);
+      return Promise.reject({
+        status: 403,
+        message: 'Access Forbidden',
+        error: error.response?.data
+      });
+    }
+    
+    if (status === 404) {
+      console.error('Not Found:', error.response?.data);
+      return Promise.reject({
+        status: 404,
+        message: 'Resource not found',
+        error: error.response?.data
+      });
+    }
+    
+    if (status >= 500) {
+      console.error('Server Error:', error.response?.data);
+      return Promise.reject({
+        status,
+        message: 'Server error. Please try again later.',
+        error: error.response?.data
+      });
+    }
+    
     return Promise.reject(error);
   }
 );

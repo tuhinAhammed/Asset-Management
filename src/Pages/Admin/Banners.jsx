@@ -21,7 +21,7 @@ const Banners = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [formData, setFormData] = useState({
-    title: '',
+    banner_id: '',
     description: '',
     status: 'active',
     image: null,
@@ -83,14 +83,14 @@ const Banners = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.title) {
-      toast.error('Please enter banner title');
+    if (!formData.banner_id) {
+      toast.error('Please enter banner ID');
       return;
     }
 
     // Create FormData for file upload
     const submitFormData = new FormData();
-    submitFormData.append('title', formData.title);
+    submitFormData.append('banner_id', formData.banner_id);
     submitFormData.append('description', formData.description);
     submitFormData.append('status', formData.status);
     if (formData.image) {
@@ -114,7 +114,7 @@ const Banners = () => {
 
   const resetForm = () => {
     setFormData({
-      title: '',
+      banner_id: '',
       description: '',
       status: 'active',
       image: null,
@@ -128,7 +128,7 @@ const Banners = () => {
     const banner = items.find((b) => b.id === id);
     if (banner) {
       setFormData({
-        title: banner.title || '',
+        banner_id: banner.banner_id || '',
         description: banner.description || '',
         status: banner.status || 'active',
         image: null,
@@ -150,7 +150,7 @@ const Banners = () => {
 
   const columns = [
     { key: 'id', label: 'ID' },
-    { key: 'title', label: 'Title' },
+    { key: 'banner_id', label: 'Banner ID' },
     {
       key: 'image',
       label: 'Image',
@@ -215,14 +215,14 @@ const Banners = () => {
         size="lg"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Title */}
+          {/* Banner ID */}
           <div>
-            <label className="block text-sm font-medium text-primary mb-2">Banner Title *</label>
+            <label className="block text-sm font-medium text-primary mb-2">Banner ID *</label>
             <PrimaryInput
               type="text"
-              name="title"
-              placeholder="Enter banner title"
-              value={formData.title}
+              name="banner_id"
+              placeholder="Enter banner ID"
+              value={formData.banner_id}
               onChange={handleInputChange}
             />
           </div>
@@ -284,7 +284,7 @@ const Banners = () => {
           <div className="flex gap-2 pt-4">
             <button
               type="submit"
-              disabled={loading || !formData.title || (!formData.image && !isEditing)}
+              disabled={loading || !formData.banner_id || (!formData.image && !isEditing)}
               className="flex-1 bg-theme text-white py-2 px-4 rounded-lg hover:bg-buttonHover transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Saving...' : isEditing ? 'Update Banner' : 'Create Banner'}

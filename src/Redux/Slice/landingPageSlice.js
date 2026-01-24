@@ -1,18 +1,15 @@
 // Redux/Slice/landingPageSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { langingPageApi } from '../../Api/Api'
 
+// Disabled: Settings endpoint not available on backend
+// import { langingPageApi } from '../../Api/Api'
 
 export const fetchLandingPageData = createAsyncThunk(
   'landingPage/fetchData',
   async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(langingPageApi)
-      return response.data.data
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch data')
-    }
+    // Settings endpoint disabled - not implemented on backend
+    // Return empty data by default
+    return null;
   }
 )
 
