@@ -18,7 +18,9 @@ const Team = () => {
             try {
                 const res = await axios.get(teammembers);
                 setTeamMembers(res.data.list); // Your API returns a single array
-                console.log(res);
+                if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+                  console.log(res);
+                }
                 setLoading(false);
             } catch (err) {
                 setLoading(false);

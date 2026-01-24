@@ -18,7 +18,9 @@ const Services = () => {
       setLoading(true);
       try {
         const res = await axios.get(serviceListApi);
-        console.log(res);
+        if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+          console.log(res);
+        }
         setServiceData(res.data.list); // Your API returns a single array
         setLoading(false);
       } catch (err) {

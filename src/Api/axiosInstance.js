@@ -6,21 +6,33 @@ import mockAPIService from './mockAPIService';
  * =================
  * 
  * SWITCHING BETWEEN MOCK AND REAL API:
- * 1. Set USE_MOCK_DATA to true for development/demo (default)
- * 2. Set USE_MOCK_DATA to false to use real API backend
- * 3. Update API_BASE_URL if your backend is on different server
+ * 1. Set VITE_USE_MOCK_DATA environment variable to 'true' for development/demo
+ * 2. Set VITE_USE_MOCK_DATA to 'false' to use real API backend (production)
+ * 3. Update VITE_API_BASE_URL if your backend is on different server
  * 
- * Current Status: USE_MOCK_DATA = true (Using mock/demo data)
+ * ENVIRONMENT VARIABLES:
+ * - VITE_USE_MOCK_DATA: 'true' | 'false' (defaults to 'false' for production safety)
+ * - VITE_API_BASE_URL: Backend API URL (defaults to production server)
  * 
  * TO CONNECT TO REAL API:
- * - Change USE_MOCK_DATA to false
- * - Ensure API_BASE_URL points to your backend server
+ * - Ensure VITE_USE_MOCK_DATA='false' in .env
+ * - Ensure VITE_API_BASE_URL points to your backend server
  * - Verify your backend implements all endpoints in src/Api/endpoints.js
- * - Test login with real credentials (email: admin@example.com, password: 12345678 - or your real credentials)
+ * - Test login with real credentials
  */
 
-// ===== IMPORTANT: Toggle between mock and real API =====
-export const USE_MOCK_DATA = false;  // Set to true to use mock data (Currently using REAL API)
+// ===== IMPORTANT: Toggle between mock and real API via environment =====
+// Safely read from environment; defaults to false (production safety)
+const useMockDataEnv = import.meta.env.VITE_USE_MOCK_DATA;
+export const USE_MOCK_DATA = useMockDataEnv === 'true' || useMockDataEnv === true;
+
+// Validate configuration in development
+if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+  const msg = `[API Config] Mock API mode: ${USE_MOCK_DATA} | API Base: ${import.meta.env.VITE_API_BASE_URL}`;
+  if (typeof console !== 'undefined' && console.info) {
+    console.info(msg);
+  }
+}
 
 const API_BASE_URL = 'https://asset-api.shelaigor.com/api';
 // Alternative: const API_BASE_URL = 'http://localhost:8000/api'; // For local backend
@@ -287,7 +299,9 @@ axiosInstance.interceptors.response.use(
 
     // Handle network errors
     if (!error.response) {
-      console.error('Network Error:', error.message);
+      if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+        console.error('Network Error:', error.message);
+      }
       return Promise.reject({
         status: 0,
         message: error.message || 'Network error. Please check your connection.',
@@ -298,15 +312,22 @@ axiosInstance.interceptors.response.use(
     const status = error.response?.status;
     
     if (status === 401) {
-      // Unauthorized - clear token and redirect to login
+      // Unauthorized - clear token
       localStorage.removeItem('authToken');
       localStorage.removeItem('user');
-      window.location.href = '/admin/login';
+      
+      // Only redirect if we're on an admin page (not for public website API calls)
+      const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+      if (currentPath.startsWith('/admin')) {
+        window.location.href = '/admin/login';
+      }
       return Promise.reject(error);
     }
     
     if (status === 403) {
-      console.error('Access Forbidden:', error.response?.data);
+      if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+        console.error('Access Forbidden:', error.response?.data);
+      }
       return Promise.reject({
         status: 403,
         message: 'Access Forbidden',
@@ -315,7 +336,9 @@ axiosInstance.interceptors.response.use(
     }
     
     if (status === 404) {
-      console.error('Not Found:', error.response?.data);
+      if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+        console.error('Not Found:', error.response?.data);
+      }
       return Promise.reject({
         status: 404,
         message: 'Resource not found',
@@ -324,7 +347,9 @@ axiosInstance.interceptors.response.use(
     }
     
     if (status >= 500) {
-      console.error('Server Error:', error.response?.data);
+      if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+        console.error('Server Error:', error.response?.data);
+      }
       return Promise.reject({
         status,
         message: 'Server error. Please try again later.',

@@ -51,12 +51,20 @@ import { authAPI } from '../../Api/endpoints';
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }, { rejectWithValue }) => {
   try {
-    console.log('🔐 Login thunk started with email:', email);
+    const isDev = typeof import.meta !== 'undefined' && import.meta.env.DEV;
+    if (isDev) {
+      console.log('🔐 Login thunk started with email:', email);
+    }
+    
     const response = await authAPI.login(email, password);
-    console.log('📡 API Response:', response);
+    if (isDev) {
+      console.log('📡 API Response:', response);
+    }
     
     const responseData = response.data;
-    console.log('📦 Response Data:', responseData);
+    if (isDev) {
+      console.log('📦 Response Data:', responseData);
+    }
     
     // Handle both response formats:
     // Format 1: { success: true, token, user, ... } (our mock format)
@@ -64,21 +72,29 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
     const isSuccessful = responseData.success === true || responseData.status === 200;
     
     if (!isSuccessful) {
-      console.error('❌ Response not successful:', responseData.message);
+      if (isDev) {
+        console.error('❌ Response not successful:', responseData.message);
+      }
       return rejectWithValue(responseData.message || 'Login failed');
     }
     
     const token = responseData.token;
     const user = responseData.user;
     
-    console.log('✅ Token extracted:', token);
+    if (isDev) {
+      console.log('✅ Token extracted:', token);
+    }
     
     if (!token) {
-      console.error('❌ No token found in response');
+      if (isDev) {
+        console.error('❌ No token found in response');
+      }
       return rejectWithValue('No token in API response');
     }
     
-    console.log('🎫 Token:', token);
+    if (isDev) {
+      console.log('🎫 Token:', token);
+    }
     
     // Store in localStorage immediately for ProtectedRoute fallback
     localStorage.setItem('authToken', token);
@@ -88,10 +104,15 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
     
     // Return both token and user for Redux state
     const result = { token, user };
-    console.log('✅ Returning from thunk:', result);
+    if (isDev) {
+      console.log('✅ Returning from thunk:', result);
+    }
     return result;
   } catch (error) {
-    console.error('💥 Login thunk error:', error);
+    const isDev = typeof import.meta !== 'undefined' && import.meta.env.DEV;
+    if (isDev) {
+      console.error('💥 Login thunk error:', error);
+    }
     const errorMsg = error.response?.data?.message || error.message || 'Login failed';
     return rejectWithValue(errorMsg);
   }

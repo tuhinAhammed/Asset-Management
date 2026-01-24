@@ -33,7 +33,9 @@ const Testimonials = () => {
         const res = await axios.get(testimonialsApi);
         setTestimonialData(res.data.list); // Your API returns a single array
         setLoading(false);
-        console.log(res);
+        if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+          console.log(res);
+        }
       } catch (err) {
         setLoading(false);
       }

@@ -1,20 +1,30 @@
 // Redux/Slice/landingPageSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-
-// Disabled: Settings endpoint not available on backend
-// import { langingPageApi } from '../../Api/Api'
+import axiosInstance from '../../Api/axiosInstance'
 
 export const fetchLandingPageData = createAsyncThunk(
   'landingPage/fetchData',
   async (_, { rejectWithValue }) => {
-    // Settings endpoint disabled - not implemented on backend
-    // Return empty data by default
-    return null;
+    try {
+      // Fetch landing page settings from backend
+      const response = await axiosInstance.get('/settings');
+      
+      // Extract data with defensive handling
+      const data = response.data?.data || response.data || {};
+      return data;
+    } catch (error) {
+      // Return rejection with error message
+      const message = error.response?.data?.message || error.message || 'Failed to fetch landing page data';
+      return rejectWithValue(message);
+    }
   }
 )
 
 const initialState = {
-  data: null  // Only store data, no loading/error states
+  data: null,
+  loading: false,
+  error: null,
+  success: false
 }
 
 const landingPageSlice = createSlice({
@@ -23,16 +33,32 @@ const landingPageSlice = createSlice({
   reducers: {
     clearLandingPageData: (state) => {
       state.data = null
+      state.error = null
+    },
+    clearLandingPageError: (state) => {
+      state.error = null
     }
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchLandingPageData.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
       .addCase(fetchLandingPageData.fulfilled, (state, action) => {
         state.data = action.payload
+        state.loading = false
+        state.error = null
+        state.success = true
       })
-      // Remove pending and rejected cases since we don't track loading/error
+      .addCase(fetchLandingPageData.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload || 'An error occurred'
+        state.success = false
+        state.data = null
+      })
   }
 })
 
-export const { clearLandingPageData } = landingPageSlice.actions
+export const { clearLandingPageData, clearLandingPageError } = landingPageSlice.actions
 export default landingPageSlice.reducer

@@ -30,6 +30,7 @@ import EventDetail from './Pages/EventDetail.jsx';
 import AdminLayout from './Components/Admin/AdminLayout.jsx';
 import ProtectedRoute from './Components/ProtectedRoute.jsx';
 import AuthInitializer from './Components/AuthInitializer.jsx';
+import ErrorBoundary from './Components/ErrorBoundary.jsx';
 import Login from './Pages/Admin/Login.jsx';
 import Dashboard from './Pages/Admin/Dashboard.jsx';
 import Products from './Pages/Admin/Products.jsx';
@@ -47,9 +48,10 @@ import Settings from './Pages/Admin/Settings.jsx';
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
-<Provider store={store}>
-  <AuthInitializer>
-    <BrowserRouter>
+<ErrorBoundary>
+  <Provider store={store}>
+    <AuthInitializer>
+      <BrowserRouter>
       <Routes>
         {/* Website Routes */}
         <Route  element={<RootLayout />} >
@@ -98,8 +100,9 @@ ReactDOM.createRoot(root).render(
           <Route path="admin/settings" element={<Settings />} />
         </Route>
       </Routes>
-    </BrowserRouter>
-  </AuthInitializer>
-</Provider>
+      </BrowserRouter>
+    </AuthInitializer>
+  </Provider>
+</ErrorBoundary>
   
 );

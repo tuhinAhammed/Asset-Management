@@ -16,16 +16,22 @@ const Login = () => {
     password: '',
   });
 
-  // Debug: Log auth state changes
+  // Debug: Log auth state changes (dev only)
   useEffect(() => {
-    console.log('Auth State:', { loading, error, token, hasToken: !!token });
+    if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+      console.log('Auth State:', { loading, error, token, hasToken: !!token });
+    }
   }, [loading, error, token]);
 
   // SINGLE redirect - watch token and redirect when it changes
   useEffect(() => {
-    console.log('useEffect triggered - token:', token);
+    if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+      console.log('useEffect triggered - token:', token);
+    }
     if (token) {
-      console.log('Token found! Navigating to dashboard...');
+      if (typeof import.meta !== 'undefined' && import.meta.env.DEV) {
+        console.log('Token found! Navigating to dashboard...');
+      }
       navigate('/admin/dashboard', { replace: true });
     }
   }, [token, navigate]);
@@ -102,11 +108,13 @@ const Login = () => {
             </button>
           </form>
 
-          <p className="text-center text-tertiary text-sm mt-6">
-            <span className="block mb-2 font-semibold">Demo Credentials:</span>
-            <span className="block text-xs">Email: admin@example.com</span>
-            <span className="block text-xs">Password: 12345678</span>
-          </p>
+          {typeof import.meta !== 'undefined' && import.meta.env.DEV && (
+            <p className="text-center text-tertiary text-sm mt-6">
+              <span className="block mb-2 font-semibold">Demo Credentials:</span>
+              <span className="block text-xs">Email: admin@example.com</span>
+              <span className="block text-xs">Password: 12345678</span>
+            </p>
+          )}
         </div>
       </div>
     </div>
