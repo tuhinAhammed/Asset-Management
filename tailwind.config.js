@@ -27,7 +27,7 @@ export default {
         static : "#1A1A34",
         themeDeep : "#978C21",
         lightThemeBg : "#E5F2FF", // for light theme background color
-        buttonHover :"#e89405",
+        buttonHover :"#978C21",
         borderColor : "#CCCCCC",
         skeletonLoading : "#cbd5e1"
       },

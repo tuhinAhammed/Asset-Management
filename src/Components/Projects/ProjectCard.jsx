@@ -2,98 +2,160 @@ import React, { useState, useEffect } from "react";
 import MinTitle from "../../Layout/Title/MinTitle";
 import MidTitle from "../../Layout/Title/MidTitle";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../Api/Api";
 
-const ProjectCard = ({
-  data
-}) => {
-const {description ,image , id , product_name , slug} = data
-const [isLoaded , setIsLoaded] = useState(false)
-const navigate = useNavigate()
-  // Truncate projectDesc to 76 characters
-  const truncatedDesc =
-    description?.length > 96 ? description?.slice(0, 96) + "..." : description;
+const ProjectCard = ({ data }) => {
+  const { 
+    description, 
+    thumbnail, 
+    id, 
+    name, 
+    slug, 
+    info,
+    category_name,
+    category_id
+  } = data;
+  
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const navigate = useNavigate();
 
-  // Handle image load event
-  const handleImageLoad = () => {
-    setIsLoaded(true); // Set isLoaded to true when the image is fully loaded
+  // Get primary info from the info array
+  const primaryInfo = info?.find(item => item.info_type === "primary") || info?.[0];
+  
+  // Generate project slug if not provided
+  const generateSlug = (projectName) => {
+    return projectName
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
   };
-  const GoSingleProject = async () => {
-    console.log("ok");
-    const projectSlug = product_name
-        .toLowerCase()
-        .replace(/[^\w\s]/g, '') // Remove special characters
-        .replace(/\s+/g, '-')    // Replace spaces with hyphens
-        .replace(/-+/g, '-')     // Replace multiple hyphens with single hyphen
-        .trim();
-    navigate(`/project/${projectSlug}`, { state: { projectId: id , slug : slug} });
-};
-  // Trigger image load effect
+
+  // Truncate description
+  const truncatedDesc = description?.length > 96 
+    ? `${description.slice(0, 96)}...` 
+    : description || primaryInfo?.info_details?.slice(0, 96) || '';
+
+  // Handle navigation to single project
+  const handleProjectClick = () => {
+    const projectSlug = slug || generateSlug(name);
+    
+    navigate(`/project/${projectSlug}`, { 
+      state: { 
+        projectId: id, 
+        slug: projectSlug,
+        projectData: data 
+      } 
+    });
+  };
+
+  // Handle image loading
   useEffect(() => {
-    if (image) {
+    if (thumbnail) {
       const img = new Image();
-      img.src = image;
-      img.onload = handleImageLoad; // Trigger on image load
+      img.src = `${api}/storage/${thumbnail}`;
+      img.onload = () => setIsLoaded(true);
+      img.onerror = () => {
+        console.error(`Failed to load image: ${thumbnail}`);
+        setImageError(true);
+        setIsLoaded(true);
+      };
+    } else {
+      setIsLoaded(true); // No image to load
     }
-  }, [image]);
+  }, [thumbnail]);
+
+  // Get image URL with fallback
+  const getImageUrl = () => {
+    if (!thumbnail || imageError) {
+      return "https://images.unsplash.com/photo-1518834103327-0d0b419cee9e?w=600&h=400&fit=crop";
+    }
+    return `${api}/storage/${thumbnail}`;
+  };
+
   return (
-    <div onClick={GoSingleProject}>
-      <div className="group/outer relative overflow-hidden bg-opacity-[0.2] rounded-md  shadow-lg hover:shadow-xl border-2 border-theme border-opacity-[0.1]">
-        {/* Skeleton Loading */}
+    <div 
+      onClick={handleProjectClick}
+      className="group cursor-pointer"
+    >
+      <div className="relative overflow-hidden bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-theme hover:border-opacity-30">
+        {/* Category Badge */}
+        {category_name && (
+          <div className="absolute top-4 left-4 z-10">
+            <span className="inline-block px-3 py-1 text-xs font-medium bg-theme bg-opacity-90 text-white rounded-full backdrop-blur-sm">
+              {category_name}
+            </span>
+          </div>
+        )}
 
-          {/* <div className=" shadow rounded-md max-w-sm w-full mx-auto">
-            <div className="animate-pulse flex flex-col">
-              <div className="overflow-hidden h-[220px] sm:h-[220px] md:h-[150px] lg:h-[200px] xl:h-[250px] relative ">
-                <div className="h-full bg-slate-200 rounded-md"></div>
-              </div>
-              <div className="p-4">
-                <div className="h-4 bg-slate-200 rounded col-span-2 w-3/4 my-2 mb-4"></div>
-                <div className="space-y-3">
-                  <div className="h-2 bg-slate-200 rounded w-3/4 mb-2"></div>
-                  <div className="h-2 bg-slate-200 rounded w-1/3 mb-2"></div>
-                </div>
-              </div>
-            </div>
-          </div> */}
+        {/* ID Badge */}
+        <div className="absolute top-4 right-4 z-10">
+          <span className="inline-block px-2.5 py-1 text-xs font-semibold bg-black bg-opacity-60 text-white rounded-full">
+            #{id.toString().padStart(2, '0')}
+          </span>
+        </div>
 
+        {/* Image Container */}
+        <div className="relative overflow-hidden h-48 sm:h-56 md:h-52 lg:h-60 xl:h-64">
+          {!isLoaded ? (
+            <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-t-xl"></div>
+          ) : null}
+          
+          <img
+            src={getImageUrl()}
+            alt={name || "Project Image"}
+            loading="lazy"
+            className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${
+              isLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onError={() => setImageError(true)}
+          />
+          
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          {/* View Project Button */}
+          <div className="absolute bottom-0 left-0 right-0 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <button className="w-full bg-theme text-white py-3 px-4 flex items-center justify-center gap-2 font-medium hover:bg-opacity-90 transition-colors">
+              <span>View Project</span>
+              <MdKeyboardArrowRight className="text-lg group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+        </div>
 
-        {/* Main Content - After Image is Loaded */}
-
-          <>
+        {/* Content */}
+        <div className="p-5 md:p-6">
+          <MidTitle 
+            text={name || "Unnamed Project"} 
+            className="text-gray-800 font-semibold mb-2 group-hover:text-theme transition-colors line-clamp-1"
+          />
+          
+          {truncatedDesc && (
             <MinTitle
-              text={id}
-              className="py-[3px] px-3 !text-[12px] rounded-sm bg-theme bg-opacity-[0.6] inline-block text-secondary absolute right-0 top-0 z-[2]"
+              text={truncatedDesc}
+              className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4"
             />
-            <div className="overflow-hidden h-[220px] sm:h-[220px] md:h-[150px] lg:h-[200px] xl:h-[250px] relative">
-              <img
-                loading="lazy"
-                src={`${api}/storage/${image}`}
-                alt="Project"
-                onLoad={handleImageLoad} // Trigger on image load
-                className="w-full h-auto transform transition-transform duration-[6000ms] ease-in group-hover/outer:-translate-y-[calc(100%-250px)] group-hover:animation-paused"
-                srcSet={`${api}/storage/${image}?w=300 300w, ${api}/storage/${image}?w=600 600w, ${api}/storage/${image}?w=1200 1200w`} // Example of responsive image loading
-              />
-              <Link
-                to={id}
-                className={`absolute bottom-0 left-0 z-2 bg-theme bg-opacity-[0.7] w-full text-secondary text-xl cursor-pointer font-medium duration-300 items-center gap-1 inline-block duration-300 justify-center hidden group-hover/outer:flex duration-1000 group/inner`}
-              >
-                <MidTitle
-                  text="View Project"
-                  className="text-secondary font-secondary !text-[16px]"
-                />
-                <MdKeyboardArrowRight className="text-secondary group-hover/inner:ml-2 duration-300 mt-[2px]" />
-              </Link>
-            </div>
-            <div className="p-4">
-              <MidTitle text={product_name} className="text-left py-1 group-hover/outer:!text-theme duration-300 font-secondary" />
-              <MinTitle
-                text={truncatedDesc}
-                className="text-left h-[40px] sm:h-[35px] md:h-[50px] lg:h-[70px] xl:h-[60px] text-[#535353] font-secondary pb-4"
-              />
-            </div>
-          </>
+          )}
 
+          {/* Tech Stack Tags (if info available) */}
+          {primaryInfo && (
+            <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                {primaryInfo.info_type || "Info"}
+              </span>
+            </div>
+          )}
+
+          {/* Arrow indicator */}
+          <div className="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="w-8 h-8 rounded-full bg-theme bg-opacity-10 flex items-center justify-center">
+              <MdKeyboardArrowRight className="text-theme" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

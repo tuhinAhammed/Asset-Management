@@ -251,7 +251,7 @@ const Footer = () => {
               />
               <MidTitle
                 className="font-secondary  text-secondary mt-2 md:mt-5 pb-2 md:pb-3"
-                text="WWelcome to our web design agency. We create beautiful, user-friendly websites that help businesses stand out online."
+                text="Welcome to our web design agency. We create beautiful, user-friendly websites that help businesses stand out online."
               />
               <div className="flex items-center gap-x-2 sm:gap-x-3 md:gap-x-4 lg:gap-x-4 mt-3 sm:mt-2 lg:mt-2">
                 {SocialContactData.map((item, index) => (

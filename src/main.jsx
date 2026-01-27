@@ -44,6 +44,7 @@ import Content from './Pages/Admin/Content.jsx';
 import Profile from './Pages/Admin/Profile.jsx';
 import ChangePassword from './Pages/Admin/ChangePassword.jsx';
 import Settings from './Pages/Admin/Settings.jsx';
+import AppointmentPage from "./Pages/AppoinmentPage.jsx";
 
 const root = document.getElementById("root");
 
@@ -66,7 +67,6 @@ ReactDOM.createRoot(root).render(
           <Route path="blog/:id" element={<SingleBlogPage />} />
           <Route path="projects" element={<Projects />} />
           <Route path="project/:id" element={<SingleProject />} />
-          <Route path="about-us" element={<About />} />
           <Route path="why-us" element={<WhyUs />} />
           <Route path="our-business" element={<OurBusiness />} />
           <Route path="career" element={<Career />} />
@@ -74,6 +74,7 @@ ReactDOM.createRoot(root).render(
           <Route path="news/:slug" element={<NewsDetail />} />
           <Route path="event/:slug" element={<EventDetail />} />
           <Route path="our-story" element={<OurStory />} />
+          <Route path="appointment-form" element={<AppointmentPage />} />
           <Route path="*" element={<Error />} />
         </Route>
 

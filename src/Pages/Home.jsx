@@ -19,17 +19,17 @@ const Home = () => {
     <div className=''>
         <Banner/>
         <WhoWeAre/>
-        <ShortMarque/>
-        <ServiceOverview/>
+        {/* <ShortMarque/> */}
+        {/* <ServiceOverview/> */}
         <CompanyStats/>
         <SubBusiness/>
         <ProjectOverview/>
         <WhyUs/>
-        <FaqsOverview/>
-        <TestimonialOverview/>
+        {/* <FaqsOverview/> */}
+        {/* <TestimonialOverview/> */}
         <ContactOverview/>
-        <BlogOverview/>
-        <Strategy/>
+        {/* <BlogOverview/> */}
+        {/* <Strategy/> */}
     </div>
   )
 }

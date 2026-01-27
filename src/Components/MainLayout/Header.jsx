@@ -97,7 +97,7 @@ const Header = () => {
     subMenu: [
       { name: "Our Story", link: "/our-story"  },
       { name: "Our Team", link: "/our-team" },
-      { name: `Why ${company_name}`, link: "/whyus" },
+      { name: `Why Us`, link: "/why-us" },
       { name: "Our Business", link: "/our-business" },
     ],
   };
@@ -230,12 +230,11 @@ const Header = () => {
               <ul className="grid gap-y-5 uppercase text-secondary">
                 {[
                   { name: "Home", link: "/" },
-                  { name: "Services", link: "/services" },
+                  // { name: "Services", link: "/services" },
                   { name: "Projects", link: "/projects" },
                   { name: "Career", link: "/career" },
                   { name: "News & Events", link: "/news-events" },
-                  { name: "About Us", link: "/about-us" },
-                  { name: "Blogs", link: "/blogs" },
+                  // { name: "Blogs", link: "/blogs" },
                 ].map((item, i) => (
                   <li key={i}>
                     <Link

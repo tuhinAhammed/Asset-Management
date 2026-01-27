@@ -17,6 +17,7 @@ export const langingPageApi = `${baseApi}/settings`;
 export const projectsList = `${baseApi}/products `;
 export const singleProject = `${baseApi}/product/`;
 export const categoryListApi = `${baseApi}/active-categories`;
+export const appointmentCreateApi = `${baseApi}/admin/appointment/create`;
 
 
 
